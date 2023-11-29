@@ -1,7 +1,0 @@
-"Dallas.obj",
-"I2C.obj",
-"LCD.obj",
-"main.obj",
-"ClavierI2C.obj" 
-TO "ProjetBras" 
-RAMSIZE(256) 
