@@ -1,0 +1,174 @@
+C51 COMPILER V9.53.0.0   MAIN                                                              11/29/2023 09:40:36 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /**************************************************************************************************
+   2          Nom du fichier : main.c
+   3          Auteur : Stéphane Deschênes                  
+   4          Date de création : 20 octobre 2023
+   5          
+   6            Ce programme est fourni avec le lab 05 du cours 247-336.
+   7          
+   8          Versions
+   9          0.1 - Premiere version
+  10          0.2 - Progression, ajout de commentaires importants.
+  11          0.3 - Version fournie pour le laboratoire #5
+  12          0.4 - Projgramme pour le laboratoire #7
+  13            
+  14          ***************************************************************************************************/
+  15          
+  16          // *************************************************************************************************
+  17          //  INCLUDES
+  18          // *************************************************************************************************  
+  19          
+  20          #include "ds89c450.h"       // Définition des bits et des registres du microcontrôleur
+  21          #include <stdio.h>          // Prototype de declarations des fonctions I/O  
+  22          #include "Dallas.h"
+  23          #include "LCD.h"
+  24          #include "ClavierI2C.h"
+  25          #include "I2C.h"
+  26          
+  27          // *************************************************************************************************
+  28          //  CONSTANTES
+  29          // *************************************************************************************************
+  30          #define MILIEU 0x66
+  31          #define FERME  0x00
+  32          #define OUVERT 0xFF
+  33          // *************************************************************************************************
+  34          //  FONCTIONS LOCALES
+  35          // *************************************************************************************************
+  36          
+  37          // *************************************************************************************************
+  38          //  STRUCTURES ET UNIONS
+  39          // *************************************************************************************************
+  40          struct STServoPosition
+  41            {
+  42              unsigned char ucBase;
+  43              unsigned char ucEpaule;
+  44              unsigned char ucCoude;
+  45              unsigned char ucPoignet;
+  46              unsigned char ucPince;
+  47            }stState;
+  48          // *************************************************************************************************
+  49          // VARIABLES GLOBALES
+  50          // *************************************************************************************************
+  51          
+  52          // *************************************************************************************************
+  53          // VARIABLES LOCALES
+  54          // *************************************************************************************************
+  55          unsigned char ucIncrement;    
+C51 COMPILER V9.53.0.0   MAIN                                                              11/29/2023 09:40:36 PAGE 2   
+
+  56          unsigned int i;
+  57          unsigned char ucSequenceActive;
+  58          unsigned char ucTouche;
+  59          unsigned char ucComptTimer;
+  60          unsigned char ucSeq = 0;
+  61          unsigned char xdata ucEcranDebutTab [4][21] = { {"1:66 2:66 3:66 4:66 "},
+  62                                                          {"5:66 X:FF Y:FF P:FF "},
+  63                                                          {"B:FF Bloc:--        "},
+  64                                                          {"05 Seq:0 Step:0 OffL"}
+  65                                                        };
+  66          //unsigned char xdata ucSeqData [][][];                                       
+  67          // *************************************************************************************************
+  68          void main (void)
+  69          //
+  70          //  Auteur: Stéphane Deschênes 
+  71          //
+  72          //  Description: Appelé lorsque le programme démarre
+  73          //  Paramètres d'entrées  : Aucun
+  74          //  Paramètres de sortie  : Aucun
+  75          //  Notes                 : Aucune
+  76          //
+  77          // *************************************************************************************************
+  78          { 
+  79   1      //////////////INITIALISATIONS///////////////////////////////////////////////////////////////////////
+  80   1        ucIncrement = 5;
+  81   1        stState.ucBase = MILIEU;      //PINCE OUVERTE, 4 AUTRES SERVOS AU MILIEU
+  82   1        stState.ucEpaule = MILIEU;    //^^^^^^^^^^^^^^^^^^^^^^^^
+  83   1        stState.ucCoude = MILIEU;     //^^^^^^^^^^^^^^^^^^^^^^^^
+  84   1        stState.ucPoignet = MILIEU;   //^^^^^^^^^^^^^^^^^^^^^^^^
+  85   1        stState.ucPince = OUVERT;     //^^^^^^^^^^^^^^^^^^^^^^^^
+  86   1      //  ALIMENTER LE CLAVIER I2C
+  87   1      //  for(i = DELAI, i = DELAI, i = DELAI)
+  88   1      //    {
+  89   1            vInitPortSerie();
+  90   1            vInitTimer0();        //TIMER0 À 50MS
+  91   1            vInitialiseLCD();     //INITIALISE LE LCD
+  92   1      //      //INITIALISATION POSITION DU BRAS
+  93   1            vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
+  94   1      //    }
+  95   1      //////////////PROGRAMME PRINCIPAL///////////////////////////////////////////////////////////////////
+  96   1        while (1)
+  97   1        {
+  98   2          if (ucSequenceActive == 1)
+  99   2          {
+ 100   3      //      stState.ucBase     = SeqData [Seq] [Step] [0];
+ 101   3      //      stState.ucEpaule   = SeqData [Seq] [Step] [1];
+ 102   3      //      stState.ucCoude    = SeqData [Seq] [Step] [2];
+ 103   3      //      stState.ucPoignet  = SeqData [Seq] [Step] [3];
+ 104   3      //      stState.ucPince    = SeqData [Seq] [Step] [4];
+ 105   3          }
+ 106   2          ucTouche = ucReadKeyI2C();
+ 107   2          if (ucTouche == 0x20)
+ 108   2          {
+ 109   3            //TRAITER LA TOUCHE
+ 110   3          }
+ 111   2          
+ 112   2          //if(TRAME RECUE)
+ 113   2          {
+ 114   3            vLcdEcrireCaract('O', LIGNE3, 16);
+ 115   3            vLcdEcrireCaract('N', LIGNE3, 17);
+ 116   3            vLcdEcrireCaract('L', LIGNE3, 18);
+ 117   3            vLcdEcrireCaract(' ', LIGNE3, 19);
+C51 COMPILER V9.53.0.0   MAIN                                                              11/29/2023 09:40:36 PAGE 3   
+
+ 118   3            //TRAITEMENT DE LA TRAME
+ 119   3          }
+ 120   2          if (ucComptTimer == 6)  //SI 300 MS DE PASSEES
+ 121   2          {
+ 122   3            vLcdEcrireCaract('O', LIGNE3, 16);
+ 123   3            vLcdEcrireCaract('F', LIGNE3, 17);
+ 124   3            vLcdEcrireCaract('F', LIGNE3, 18);
+ 125   3            vLcdEcrireCaract('L', LIGNE3, 19);
+ 126   3          } 
+ 127   2          if (ucComptTimer == 4)  //SI 200 MS DE PASSEES
+ 128   2          {
+ 129   3      //      vAfficheEtat();       //AFFICHE L'ETAT DU SYSTEME
+ 130   3          }
+ 131   2          if (ucSequenceActive == 0)     //si pas de sequence active
+ 132   2          {
+ 133   3            if (ucTouche != 0) //SUPPOSE ETRE SI TOUCHE PESEE, MAIS JE CROIS PAS QUE CE SOIT LA BONNE CONDITION
+ 134   3            {
+ 135   4      //        ucSeq = 0,1 ou 2; //ACTIVE LA SEQUENCE EN FONCTION DE LA CASE
+ 136   4              ucSequenceActive = 1;    //SERA REMIS A 0 APRES LE RETOUR AU REPOS
+ 137   4            }
+ 138   3          }
+ 139   2          if (ucComptTimer == 40)  //SI 2 SECONDES PASSEES
+ 140   2          {
+ 141   3      //      vTraiteSequence();    //TRAITEMENT DE LA SEQUENCE
+ 142   3          }
+ 143   2        }
+ 144   1      }
+ 145          // *************************************************************************************************
+ 146          // FONCTIONS lOCALES
+ 147          // *************************************************************************************************
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    137    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     84    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
