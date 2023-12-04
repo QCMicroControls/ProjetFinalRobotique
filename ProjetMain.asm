@@ -60,7 +60,7 @@
 
 
      LIST      p=16f88         ; Liste des directives du processeur.
-     #include <p16F88.inc>     ; DÈfinition des registres spÈcifiques au CPU.
+     #include <p16F88.inc>     ; D√©finition des registres sp√©cifiques au CPU.
 
      errorlevel  -302          ; Retrait du message d'erreur 302.
 
@@ -163,15 +163,15 @@ Encore
 ;       Auteur : Alain Champagne
 ;       Date de creation : 23-09-2018                                
 ;       Description :      Routine d'initiation des registres du PIC.
-;                          - RP1 ‡ 0 pour Ítre toujours dans Bank 0 et 1,
-;                          - DÈsactiver les interruptions,
-;                          - DÈsactiver les entrÈes analogiques,
-;                          - PortA en entrÈe,
-;                          - PortB en entrÈe sauf: Bits I2C et LEDs en sortie.
+;                          - RP1 √† 0 pour √™tre toujours dans Bank 0 et 1,
+;                          - D√©sactiver les interruptions,
+;                          - D√©sactiver les entr√©es analogiques,
+;                          - PortA en entr√©e,
+;                          - PortB en entr√©e sauf: Bits I2C et LEDs en sortie.
 ;                                                       
 ;       Fonctions appelees : NA 
-;       ParamËtres d'entree : NA  
-;       ParamËtres de sortie : NA 
+;       Param√®tres d'entree : NA  
+;       Param√®tres de sortie : NA 
 ;       Variables utilisees : NA  
 ;       Include : Fichier P16F88.inc
 ;       Equates : NA
@@ -179,15 +179,15 @@ Encore
 ;                                               
 ;******************************************************************************
 InitPic
-     bcf     STATUS, RP1       ; Pour s'assurer d'Ítre dans les bank 0 et 1 
+     bcf     STATUS, RP1       ; Pour s'assurer d'√™tre dans les bank 0 et 1 
      BANK1                     ; Select Bank1        
-     bcf     INTCON,GIE        ; DÈsactive les interruptions        
-     clrf    ANSEL             ; DÈsactive les convertisseurs reg ANSEL 0x9B        
+     bcf     INTCON,GIE        ; D√©sactive les interruptions        
+     clrf    ANSEL             ; D√©sactive les convertisseurs reg ANSEL 0x9B        
      movlw   b'01111000'       ; osc internal 8 Mhz
      movwf   OSCCON
      movlw   b'11111111'       ; Remplacer les x par des 1 ou 0.
      movwf   TRISA             ; PortA en entree         
-     movlw   b'11100100'       ; Bits en entrÈes sauf,
+     movlw   b'11100100'       ; Bits en entr√©es sauf,
      movwf   TRISB             ; RB3 (Led1), RB4 (Led2) en sortie. 
      BANK0                     ; Select Bank0
      return
@@ -200,8 +200,8 @@ InitPic
 ;       Description :   
 ;                                                       
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :              
-;       ParamËtres de sortie :           
+;       Param√®tres d'entree :              
+;       Param√®tres de sortie :           
 ;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
@@ -266,8 +266,8 @@ PWMSUITE
 ;       Description :   
 ;                                                       
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :              
-;       ParamËtres de sortie :           
+;       Param√®tres d'entree :              
+;       Param√®tres de sortie :           
 ;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
@@ -331,8 +331,8 @@ SetFreqPCA9685
 ;       Description :   
 ;                                                       
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :              
-;       ParamËtres de sortie :           
+;       Param√®tres d'entree :              
+;       Param√®tres de sortie :           
 ;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
@@ -363,7 +363,7 @@ ResetPCA9685
 ; Gestion de SDA et SCL pour ne jamais mettre de vrai 1 sur le bus. C'est les 
 ; pull-up sur SDA et SCL qui s'en charge.
 ;
-; Pour mettre SDA ou SCL ‡ 1 on met le bit en entree.
+; Pour mettre SDA ou SCL √† 1 on met le bit en entree.
 ;
 ;******************************************************************************
 SDA0     
@@ -407,13 +407,13 @@ SCL1
 ;      Date de creation :                                  
 ;      Modification : 
 ;       Description :   Routine d'initiation d'une communication serie I2C. 
-;                       Doit Ítre appelee ‡ chaque debut d'operation.
-;                       Le passage de 1 ‡ 0 sur la ligne SDA durant
+;                       Doit √™tre appelee √† chaque debut d'operation.
+;                       Le passage de 1 √† 0 sur la ligne SDA durant
 ;                       un niveau 1 sur la ligne SCL initie un START BIT.
 ;                                                       
 ;       Fonctions appelees :            
-;       ParamËtres d'entree :            
-;       ParamËtres de sortie :            
+;       Param√®tres d'entree :            
+;       Param√®tres de sortie :            
 ;       Variables utilisees : 
 ;       Include :    
 ;       Equate :                   
@@ -434,14 +434,14 @@ StartBitI2C
 ;       Nom de la fonction : StopBitI2C                 
 ;       Auteur :         
 ;       Date de creation :                               
-;       Description :   Routine de clÙture d'une communication serie I2C.
-;                       Doit Ítre appelee ‡ la fin de toutes operations.
-;                       Passage de 0 ‡ 1 sur la ligne SDA durant
+;       Description :   Routine de cl√¥ture d'une communication serie I2C.
+;                       Doit √™tre appelee √† la fin de toutes operations.
+;                       Passage de 0 √† 1 sur la ligne SDA durant
 ;                       un niveau 1 sur la ligne SCL initie un STOP BIT.
 ;                                                       
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :              
-;       ParamËtres de sortie :           
+;       Param√®tres d'entree :              
+;       Param√®tres de sortie :           
 ;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
@@ -465,14 +465,14 @@ StopBitI2C
 ;       Date de creation :                           
 ;       Modification :  
 ;       Description :   Routine de reception d'un bit de communication I2C.
-;                       La routine prend le bit de la ligne SDA aprËs avoir 
+;                       La routine prend le bit de la ligne SDA apr√®s avoir 
 ;                       active la ligne SCL. Le bit de donnee est place 
 ;                       temporairement dans la variable ___________ et sera  
 ;                       reutilise dans la routine de traitement d'octets.
 ;                                                       
 ;       Fonctions appelees :          
-;       ParamËtres d'entree :             
-;       ParamËtres de sortie :               
+;       Param√®tres d'entree :             
+;       Param√®tres de sortie :               
 ;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                 
@@ -511,12 +511,12 @@ SuiteLire1Bit
 ;       Description : Routine d'emission d'un bit de communication I2C.
 ;                     La routine utilise le bit 0 de la variable _____________ 
 ;                     pour ajuster le niveau de la ligne SDA.  
-;                     Les lignes SDA et SCL sont activee ‡ tour de rÙle pour 
-;                     communiquer l'information du maÓtre ‡ l'esclave.
+;                     Les lignes SDA et SCL sont activee √† tour de r√¥le pour 
+;                     communiquer l'information du ma√Ætre √† l'esclave.
 ;                                                       
 ;       Fonctions appelees :          
-;       ParamËtres d'entree :                  
-;       ParamËtres de sortie :          
+;       Param√®tres d'entree :                  
+;       Param√®tres de sortie :          
 ;       Variables utilisees : 
 ;       Include :    
 ;       Equate :                 
@@ -554,8 +554,8 @@ SuiteEcrire1Bit
 ;                       La donnee lue est memorisee dans la variable _________.
 ;                       Parlez de la gestion du Ack                                
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :           
-;       ParamËtres de sortie :               
+;       Param√®tres d'entree :           
+;       Param√®tres de sortie :               
 ;       Variables utilisees : 
 ;       Include :    
 ;       Equate :                 
@@ -592,8 +592,8 @@ SuiteLire8Bit
 ;                       La donnee lue est memorisee dans la variable _________.
 ;                       Parlez de la gestion du Ack                                
 ;       Fonctions appelees :           
-;       ParamËtres d'entree :           
-;       ParamËtres de sortie :               
+;       Param√®tres d'entree :           
+;       Param√®tres de sortie :               
 ;       Variables utilisees : 
 ;       Include :    
 ;       Equate :                 
@@ -623,8 +623,8 @@ SendAckI2C
 ;                       avant l'appel de la fonction.
 ;                       Parlez de la gestion du Ack                                
 ;       Fonctions appelees :        
-;       ParamËtres d'entree :  
-;       ParamËtres de sortie :     
+;       Param√®tres d'entree :  
+;       Param√®tres de sortie :     
 ;       Variables utilisees : 
 ;       Include :     
 ;       Equate :              
@@ -666,8 +666,8 @@ SuiteEcrire8Bit
 ;                       d'environ 5 ms (Write Time).                        
 ;                                                                             
 ;       Fonctions appelees :       
-;       ParamËtres d'entree :                               
-;       ParamËtres de sortie :                                         
+;       Param√®tres d'entree :                               
+;       Param√®tres de sortie :                                         
 ;       Variables utilisees : 
 ;       Include :                                          
 ;       Equate :                                                    
@@ -714,8 +714,8 @@ EcrireMemI2C
 ;                          Decrire les parametres de sortie. 
 ;                       
 ;       Fonctions appelees :              
-;       ParamËtres d'entree :                   
-;       ParamËtres de sortie :                 
+;       Param√®tres d'entree :                   
+;       Param√®tres de sortie :                 
 ;       Variables utilisees : 
 ;       Include :              
 ;       Equate :                          
@@ -765,8 +765,8 @@ LireMemI2C
 ; 
 ;              
 ;  Fonctions appelees :        
-;  ParamËtres d'entree :        
-;  ParamËtres de sortie :        
+;  Param√®tres d'entree :        
+;  Param√®tres de sortie :        
 ;  Variables utilisees :    
 ;  Equate :      
 ;  #Define :      
@@ -811,27 +811,27 @@ Delai5us
 ;*********************************InitRS232************************************
 ;	Nom de la fonction : InitRS232			
 ;	Auteur : Pierre Chouinard		
-;       Date de crÈation : 10-10-2009	
+;       Date de cr√©ation : 10-10-2009	
 ;       Date de modification : 21-07-2018	A.C. 					      
-;	Description : 	Routine d'initialisation du port de communication sÈrie.
-;                   RS232 sur le PIC16F88 ‡ 19200 bd (RX=RB2 et TX=RB5)
+;	Description : 	Routine d'initialisation du port de communication s√©rie.
+;                   RS232 sur le PIC16F88 √† 19200 bd (RX=RB2 et TX=RB5)
 ;							
-;	Fonctions appelÈes : NA		
-;	ParamËtres d'entrÈe : NA		
-;	ParamËtres de sortie : NA	
-;	Variables utilisÈes : NA
+;	Fonctions appel√©es : NA		
+;	Param√®tres d'entr√©e : NA		
+;	Param√®tres de sortie : NA	
+;	Variables utilis√©es : NA
 ;	Equate : NA
 ;	#Define : BANK0, BANK1.  
 ;              
 ;							
 ;******************************************************************************
 InitRS232
-    movlw     b'10010000'    ; Set reception sur port sÈrie SPEN=CREN = 1
+    movlw     b'10010000'    ; Set reception sur port s√©rie SPEN=CREN = 1
     movwf     RCSTA          ;
     BANK1                    ;
-    movlw     b'00100100'    ; Set la transmission sur le port sÈrie
+    movlw     b'00100100'    ; Set la transmission sur le port s√©rie
     movwf     TXSTA          ;
-    movlw     .25            ; Set la vitesse ‡ 19200 bds
+    movlw     .25            ; Set la vitesse √† 19200 bds
     movwf     SPBRG          ;
     BANK0                    ;
     return                   ;             
@@ -840,15 +840,15 @@ InitRS232
 ;*************************************Rx232************************************
 ;	Nom de la fonction : Rx232			
 ;	Auteur : Pierre Chouinard		
-;       Date de crÈation : 10-10-2009	
+;       Date de cr√©ation : 10-10-2009	
 ;       Date de modification : 21-07-2018	A.C. 					      
-;	Description : 	Routine de rÈception de la communication sÈrie RS-232.
-;                   RS232 sur le PIC16F88 ‡ 19200 bd (RX=RB2 et TX=RB5)
+;	Description : 	Routine de r√©ception de la communication s√©rie RS-232.
+;                   RS232 sur le PIC16F88 √† 19200 bd (RX=RB2 et TX=RB5)
 ;							
-;	Fonctions appelÈes : NA		
-;	ParamËtres d'entrÈe : NA
-;	ParamËtres de sortie : vReceive.		
-;	Variables utilisÈes : NA
+;	Fonctions appel√©es : NA		
+;	Param√®tres d'entr√©e : NA
+;	Param√®tres de sortie : vReceive.		
+;	Variables utilis√©es : NA
 ;	Equate : NA	
 ;	#Define : NA 
 ; 						
@@ -858,31 +858,31 @@ Rx232
     goto      Rx232          ; le port serie.
 Rx232Go                      ; Si recu sur le port serie
     movfw     RCREG          ;
-    movwf     vReceive       ; Met le caractËre reÁu dans vReceive
+    movwf     vReceive       ; Met le caract√®re re√ßu dans vReceive
     return
 ; fin routine Rx232------------------------------------------------------------
 
 ;*************************************Tx232************************************
 ;	Nom de la fonction : Tx232			
 ;	Auteur : Pierre Chouinard		
-;       Date de crÈation : 10-10-2009	
+;       Date de cr√©ation : 10-10-2009	
 ;       Date de modification : 21-07-2018	A.C. 					      
-;	Description : 	Routine de transmission de la communication sÈrie RS-232.
-;                   Sur le PIC16F88 (RX=RB2 et TX=RB5). La vitesse est fixÈe ‡ 
-;                   19200. On place la donnÈe ‡ transmettre dans W avant l'appel  
+;	Description : 	Routine de transmission de la communication s√©rie RS-232.
+;                   Sur le PIC16F88 (RX=RB2 et TX=RB5). La vitesse est fix√©e √† 
+;                   19200. On place la donn√©e √† transmettre dans W avant l'appel  
 ;                   de Tx232.
 ;							
-;	Fonctions appelÈes : NA		
-;	ParamËtres d'entrÈe : NA	
-;	ParamËtres de sortie : NA		
-;	Variables utilisÈes : NA
+;	Fonctions appel√©es : NA		
+;	Param√®tres d'entr√©e : NA	
+;	Param√®tres de sortie : NA		
+;	Variables utilis√©es : NA
 ;	Equate : NA
 ;	#Define : NA 
 ;
 ;******************************************************************************
 Tx232
-    btfss     PIR1,TXIF      ; Attend que la transmission du caractËre 
-    goto      Tx232          ; prÈcÈdant soit terminer   
+    btfss     PIR1,TXIF      ; Attend que la transmission du caract√®re 
+    goto      Tx232          ; pr√©c√©dant soit terminer   
     movwf     TXREG          ; Transmet le caractere
     return                   ;       
 ; fin routine Tx232------------------------------------------------------------
@@ -911,6 +911,904 @@ Interruption
 
 ; fin de la routine Interruption-----------------------------------------------
 
+        END                       ; directive 'end of program'
+
+
+HAROLD
+
+
+;******************************************************************************
+;                                                                             *
+;    Filename:      FrameI2C.asm                                              *
+;    Date:          2023-11-16                                                          *
+;    File Version:  1.0                                                          *
+;                                                                             *
+;    Author:        Malbrouck Harold                                                          *
+;    Company:                                                                 *
+;                                                                             *
+;                                                                             *
+;******************************************************************************
+;                                                                             *
+;    Files required:                                                          *
+;                                                                             *
+;                                                                             *
+;                                                                             *
+;******************************************************************************
+;                                                                             *
+;    Notes:                                                                   *
+;                                                                             *
+;                                                                             *
+;                                                                             *
+;                                                                             *
+;******************************************************************************
+
+;***********************DIAGRAMME DU CONTROLEUR********************************
+;                                                                     
+;                     IN  IN  S3  IN      S2  S1  TX  D2            S: Switch 
+;                     A1  A0  A7  A6 VDD  B7  B6  B5  B4              
+;                    ____________________________________             
+;           PIN     | 18  17  16  15  14  13  12  11  10 |            
+;                   |               16C88                |            
+;           PIN     | 1   2   3  _4_  5   6   7   8   9  |            
+;                    ------------------------------------             
+;                     A2  A3  A4  A5 VSS  B0  B1  B2  B3              
+;                     IN  IN  IN  MCL     SCL SDA RX  D1            D: Del  
+;
+;******************************************************************************
+
+
+
+;******************** Les fonctions utilisees *********************************
+; InitPic                      ; Initialise le PIC.
+; SDA0                         ; Met SDA a 0
+; SDA1                         ; Met SDA a 1
+; SCL0                         ; Met SCL a 0 
+; SCL1                         ; Met SCL a 1  
+; EcrireMemI2C                 ; Ecrire un octet en memoire I2C
+; LireMemI2C                   ; Lecture d'un octet en memoire I2C
+; Ecrire8BitsI2C               ; Ecrire 8 bits sur la ligne I2C
+; Lire8BitsI2C                 ; Lire 8 bits sur la ligne I2C
+; Ecrit1BitI2C                 ; Emet 1 bit sur la ligne I2C
+; Lire1BitI2C                  ; Recoit 1 bit sur la ligne I2C
+; StartBitI2C                  ; Start une communication I2C
+; StopBitI2C                   ; Termine une communication I2C
+; Delai5us                     ; Delai pour maintenir signaux 5us.
+;******************************************************************************
+
+
+
+     LIST      p=16f88         ; Liste des directives du processeur.
+     #include <p16F88.inc>     ; D√©finition des registres sp√©cifiques au CPU.
+
+     errorlevel  -302          ; Retrait du message d'erreur 302.
+
+     __CONFIG    _CONFIG1, _CP_OFF & _CCP1_RB0 & _DEBUG_OFF & _WRT_PROTECT_OFF & _CPD_OFF & _LVP_OFF & _BODEN_ON & _MCLR_ON & _PWRTE_ON & _WDT_OFF & _INTRC_IO
+
+     __CONFIG    _CONFIG2, _IESO_OFF & _FCMEN_OFF
+
+
+
+;*********************************** DEFINES **********************************
+#define      BANK0   bcf       STATUS,RP0;
+#define      BANK1   bsf       STATUS,RP0;
+
+;*********************************** KIT-PIC **********************************
+#define      SW1               PORTB,6
+#define      SW2               PORTB,7
+#define      SW3               PORTA,7
+#define      DEL1              PORTB,3
+#define      DEL2              PORTB,4
+
+;************************************ I2C *************************************
+#define      SCL               PORTB,0
+#define      SDA               PORTB,1
+#define      BITX	       vUnBit,0
+#define	     CARRY	       STATUS,C		
+
+
+;***** VARIABLE DEFINITIONS  **************************************************
+;w_temp        EQU     0x71     ; variable used for context saving 
+;status_temp   EQU     0x72     ; variable used for context saving
+;pclath_temp   EQU     0x73     ; variable used for context saving
+
+
+;VosVariables  EQU     0x20     ; Mettre ici vos Variables
+  CBLOCK  0x20
+  vCompteur1ms
+  vCompteur5ms
+  vCompteur  
+  vChannel  
+  vReceive  
+  vMoteur
+  vPwmHi
+  vUnBit
+  vBitLu
+  vADRH
+  vADRL
+  vDATA
+  vPwm
+  vOct
+  vAck
+  vSet
+  vW
+  endc
+
+;***************************VECTEUR DE RESET***********************************
+     ORG     0x000             ; Processor reset vector
+     clrf    PCLATH            ; Page 0 (a cause du BootLoader)
+     goto    Main              ; 
+        
+
+;***********************VECTEUR D'INTERRUPTION*********************************    
+     ORG     0x004             ; Interrupt vector location
+     goto    Interruption
+
+
+;**************************PROGRAMME PRINCIPAL*********************************
+
+Main    
+     call InitPic   ; Initialise PIC et place les ports en IN/OUT
+		    ; Les lignes suivantes doivent √™tre appel√©es
+		    ; lors de l?initialisation ou dans la routine
+		    ; StartBitI2C.
+    call  InitRS232
+    call  SDA1	    ; Condition initial SDA = SCL =1
+    call  SCL1
+    bcf   DEL2
+    
+    
+    call  ResetPCA9685
+    call  SetFreqPCA9685
+    
+    movlw .0
+    movwf vSet
+
+Pwmloop         ;Permet de set le PWM
+    movfw vSet
+    movwf vPwm
+    movlw 0x00
+    movwf vMoteur
+    call  SetPWMPCA9685
+    
+Btnloopcheck    ;V√©rifie l'√©tat des boutons
+    btfsc SW1
+    goto  Sw2
+    goto  Sw1
+    btfsc SW2
+    goto  Sw2
+    goto  Btnloopcheck
+    
+Sw1              
+    call  Delais5ms
+    call  Delais5ms
+    btfsc SW1
+    goto  Sw2
+    movlw .206
+    incf  vSet  
+    incf  vSet
+    incf  vSet
+    subwf vSet,w
+    btfsc CARRY    
+    decf  vSet
+    goto  MovSw1
+    goto  Pwmloop
+
+Sw2
+    call  Delais5ms
+    call  Delais5ms
+    btfsc SW2
+    goto  Btnloopcheck
+    movlw .3
+    subwf vSet,f
+    btfss CARRY
+    incf  vSet
+    goto  MovSw2
+    goto  Pwmloop
+    
+MovSw1 
+    btfss SW1
+    goto  MovSw1
+    call  Delais5ms
+    call  Delais5ms
+    btfss SW1
+    goto  MovSw1
+    goto  Pwmloop
+    
+MovSw2
+    btfss SW2
+    goto  MovSw2
+    call  Delais5ms
+    call  Delais5ms
+    btfss SW2
+    goto  MovSw2
+    goto  Pwmloop
+;****************************** ROUTINES **************************************
+
+
+;******************************* ROUTINES *************************************
+
+;******************************* InitPic **************************************
+;       Nom de la fonction : InitPic                    
+;       Auteur : Alain Champagne
+;       Date de creation : 23-09-2018                                
+;       Description :      Routine d'initiation des registres du PIC.
+;                          - RP1 √† 0 pour √™tre toujours dans Bank 0 et 1,
+;                          - D√©sactiver les interruptions,
+;                          - D√©sactiver les entr√©es analogiques,
+;                          - PortA en entr√©e,
+;                          - PortB en entr√©e sauf: Bits I2C et LEDs en sortie.
+;                                                       
+;       Fonctions appelees : NA 
+;       Param√®tres d'entree : NA  
+;       Param√®tres de sortie : NA 
+;       Variables utilisees : NA  
+;       Include : Fichier P16F88.inc
+;       Equates : NA
+;       #Defines : BANK0, BANK1 
+;                                               
+;******************************************************************************
+InitPic
+     bcf     STATUS, RP1       ; Pour s'assurer d'√™tre dans les bank 0 et 1 
+     BANK1                     ; Select Bank1        
+     bcf     INTCON,GIE        ; D√©sactive les interruptions        
+     clrf    ANSEL             ; D√©sactive les convertisseurs reg ANSEL 0x9B        
+     movlw   b'01111000'       ; osc internal 8 Mhz
+     movwf   OSCCON
+     movlw   b'11111111'       ; Remplacer les x par des 1 ou 0.
+     movwf   TRISA             ; PortA en entree         
+     movlw   b'11100100'       ; Bits en entr√©es sauf,
+     movwf   TRISB             ; RB3 (Led1), RB4 (Led2) en sortie. 
+     BANK0                     ; Select Bank0
+     return
+
+; fin routine InitPic ---------------------------------------------------------
+#include <RS232-PIC88.asm>
+
+
+;********************************** SDA SCL ***********************************
+;
+; Gestion de SDA et SCL pour ne jamais mettre de vrai 1 sur le bus. C'est les 
+; pull-up sur SDA et SCL qui s'en charge.
+;
+; Pour mettre SDA ou SCL √† 1 on met le bit en entree.
+;
+;******************************************************************************
+SDA0     
+     bcf     SDA               ; On s'assure que bit du latch est a 0.
+     BANK1
+     bcf     TRISB,1           ; SDA en output met bit a 0.
+     BANK0
+     return
+; fin routine SDA0 ------------------------------------------------------------
+
+;******************************************************************************      
+SDA1 
+     BANK1
+     bsf     TRISB,1           ; SDA input (pull-up met a 1 ).
+     BANK0
+     return  
+; fin routine SDA1 ------------------------------------------------------------
+
+;******************************************************************************
+SCL0 
+     bcf     SCL               ; On s'assure que le bit du latch est a 0.
+     BANK1
+     bcf     TRISB,0           ; SCL en output met bit a 0.
+     BANK0
+     return
+; fin routine SCL0 ------------------------------------------------------------
+
+;******************************************************************************         
+SCL1 
+     BANK1
+     bsf     TRISB,0           ; SCL input (pull-up met a 1 ).
+     BANK0
+     return 
+; fin routine SCL1 ------------------------------------------------------------  
+
+;****************************** ResetPCA9685 ************************************
+;       Nom de la fonction : ResetPCA9685                  
+;       Auteur : Malbrouck Harold       
+;       Date de creation :  16-11-2023                          
+;       Modification :  
+;       Description :   Routine qui permet de remettre	z√©ro le circuit 
+;			PCA9685
+;                       
+;       Fonctions appelees :  StartBitI2C, Ecrire8BitsI2c, StopBitI2C            
+;       Param√®tres d'entree :                   
+;       Param√®tres de sortie :                 
+;       Variables utilisees :  
+;       Include :              
+;       Equate :                          
+;       #Define : 
+;                        
+;******************************************************************************
+ResetPCA9685
+     call StartBitI2C
+     movlw 0x00
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0x06
+     movwf vOct
+     call Ecrire8BitsI2C
+     call StopBitI2C
+     return
+;Fin routine ResetPCA9685------------------------------------------------------
+ 
+;****************************** SetFreqPCA9685 ************************************
+;       Nom de la fonction : SetFreqPCA9685                  
+;       Auteur : Malbrouck Harold          
+;       Date de creation : 16-11-2023                           
+;       Modification :  
+;       Description :   
+;                       
+;       Fonctions appelees :              
+;       Param√®tres d'entree :                  
+;       Param√®tres de sortie :                 
+;       Variables utilisees :  
+;       Include :              
+;       Equate :                          
+;       #Define : 
+;                        
+;******************************************************************************
+SetFreqPCA9685
+     call StartBitI2C
+     movlw 0x80
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0x00
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0x10
+     movwf vOct
+     call Ecrire8BitsI2C
+     call StopBitI2C
+     
+     call StartBitI2C
+     movlw 0x80
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0xFE
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0x7C
+     movwf vOct
+     call Ecrire8BitsI2C
+     call StopBitI2C
+     
+     call StartBitI2C
+     movlw 0x80
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0x00
+     movwf vOct
+     call Ecrire8BitsI2C
+     movlw 0xA0
+     movwf vOct
+     call Ecrire8BitsI2C
+     call StopBitI2C
+     
+     return
+;Fin routine SetFreqPCA9685----------------------------------------------------
+     
+;****************************** SetPWMPCA9685 ************************************
+;       Nom de la fonction : SetPWMPCA9685                  
+;       Auteur : Malbrouck Harold          
+;       Date de creation : 16-11-2023                           
+;       Modification :  
+;       Description :   
+;                       
+;       Fonctions appelees :              
+;       Param√®tres d'entree :                  
+;       Param√®tres de sortie :                 
+;       Variables utilisees :  
+;       Include :              
+;       Equate :                          
+;       #Define : 
+;                        
+;******************************************************************************
+SetPWMPCA9685
+     
+     ;Calcul Moteur
+     bcf    CARRY
+     rlf    vMoteur
+     rlf    vMoteur
+     movlw  .6
+     addwf  vMoteur,f
+
+     movlw 0x00
+     movwf vPwmHi
+     
+     movfw vPwm
+     addlw .205
+     movwf vW
+     btfsc CARRY
+     incf vPwmHi,1
+     
+     ;√âcrire I2CPCA********************
+     call StartBitI2C
+     movlw 0x80
+     movwf vOct
+     call Ecrire8BitsI2C     
+	 
+    ;Selectionne le moteur
+     movfw vMoteur
+     movwf vOct
+     call Ecrire8BitsI2C
+     
+     ;√âcrit 0 au d√©but de l'onde H****
+     movlw 0x00
+     movwf vOct
+     call Ecrire8BitsI2C
+     
+     ;√âcrit 0 au d√©but de l'onde B****
+     movlw 0x00
+     movwf vOct
+     call Ecrire8BitsI2C
+     
+     ;√âcrire 0xFinB******************* 
+     movfw vW
+     movwf vOct
+     call Ecrire8BitsI2C
+     
+     ;√âcrire 0xFinB*******************
+     movfw vPwmHi
+     movwf vOct
+     call Ecrire8BitsI2C
+     
+     call StopBitI2C  
+     return
+;Fin routine SetPWMPCA9685----------------------------------------------------
+     
+;****************************** StartBitI2C ***********************************
+;       Nom de la fonction : StartBitI2C                       
+;       Auteur : Malbrouck Harold                 
+;      Date de creation : 2023-11-02                                  
+;      Modification : 
+;       Description :   Routine d'initiation d'une communication serie I2C. 
+;                       Doit √™tre appelee √† chaque debut d'operation.
+;                       Le passage de 1 √† 0 sur la ligne SDA durant
+;                       un niveau 1 sur la ligne SCL initie un START BIT.
+;                                                       
+;       Fonctions appelees :            
+;       Param√®tres d'entree :            
+;       Param√®tres de sortie :            
+;       Variables utilisees : 
+;       Include :    
+;       Equate :                   
+;       #Define :                    
+;                                               
+;******************************************************************************
+StartBitI2C
+    call SDA1    
+    call SCL1    
+    call SDA0    
+    call SCL0
+    return
+; fin routine StartBitI2C------------------------------------------------------
+
+
+
+;******************************* StopBitI2C ***********************************
+;       Nom de la fonction : StopBitI2C                 
+;       Auteur :  Malbrouck Harold       
+;       Date de creation : 2023-11-02                               
+;       Description :   Routine de cl√¥ture d'une communication serie I2C.
+;                       Doit √™tre appelee √† la fin de toutes operations.
+;                       Passage de 0 √† 1 sur la ligne SDA durant
+;                       un niveau 1 sur la ligne SCL initie un STOP BIT.
+;                                                       
+;       Fonctions appelees :           
+;       Param√®tres d'entree :              
+;       Param√®tres de sortie :           
+;       Variables utilisees :  
+;       Include :    
+;       Equate :                   
+;       #Define :               
+;                                               
+;******************************************************************************
+StopBitI2C
+    call SDA0
+    call SCL0
+    call SCL1
+    call SDA1
+    return
+; fin routine StopBitI2C-------------------------------------------------------         
+         
+   
+      
+;******************************* Lire1BitI2C **********************************
+;       Nom de la fonction : Lire1BitI2C                        
+;       Auteur :             
+;       Date de creation :                           
+;       Modification :  
+;       Description :   Routine de reception d'un bit de communication I2C.
+;                       La routine prend le bit de la ligne SDA apr√®s avoir 
+;                       active la ligne SCL. Le bit de donnee est place 
+;                       temporairement dans la variable ___________ et sera  
+;                       reutilise dans la routine de traitement d'octets.
+;                                                       
+;       Fonctions appelees :          
+;       Param√®tres d'entree :             
+;       Param√®tres de sortie :               
+;       Variables utilisees :  
+;       Include :    
+;       Equate :                 
+;       #Define :         
+;                                               
+;******************************************************************************
+Lire1BitI2C	
+    call SDA1
+    call SCL0
+    call Delais5us
+    call SCL1
+    btfsc SDA
+    goto Ecrire1
+    goto Ecrire0
+        
+Ecrire1
+    BSF BITX
+    goto FinLecture
+Ecrire0
+    BCF BITX
+    goto FinLecture
+    
+FinLecture
+    call SCL0
+    return
+; fin routine Lire1BitI2C------------------------------------------------------
+
+
+
+;****************************** Ecrire1BitI2C *********************************
+;       Nom de la fonction : Ecrire1BitI2C                      
+;       Auteur :                 
+;       Modification :  
+;       Date de creation :                           
+;       Description : Routine d'emission d'un bit de communication I2C.
+;                     La routine utilise le bit 0 de la variable ___BITX_______ 
+;                     pour ajuster le niveau de la ligne SDA.  
+;                     Les lignes SDA et SCL sont activee √† tour de r√¥le pour 
+;                     communiquer l'information du ma√Ætre √† l'esclave.
+;                                                       
+;       Fonctions appelees :          
+;       Param√®tres d'entree :                  
+;       Param√®tres de sortie :          
+;       Variables utilisees : 
+;       Include :    
+;       Equate :                 
+;       #Define :                 
+;                                               
+;******************************************************************************
+Ecrire1BitI2C 
+    call  SCL0    
+    btfss BITX
+    goto  PortSDA0
+    goto  PortSDA1
+
+SuiteEcrire1b 
+    call  SCL1
+    call  Delais5us    
+    call  SCL0
+    return
+    
+PortSDA1
+    call  SDA1
+    goto  SuiteEcrire1b      
+    
+PortSDA0
+    call  SDA0
+    goto  SuiteEcrire1b  
+    
+    
+; fin routine Ecrire1BitI2C----------------------------------------------------
+
+
+
+;***************************** Lire8BitsI2C ***********************************
+;       Nom de la fonction : Lire8BitsI2C                      
+;       Auteur : Malbrouck Harold        
+;       Date de creation :  09-11-2023                          
+;       Modification :  
+;       Description :   Routine de reception de 8 bits de donnee 
+;                       provenant du dispositif I2C.
+;                       La donnee lue est memorisee dans la variable ___vOct___.
+;                       Parlez de la gestion du Ack                                
+;       Fonctions appelees :     Lire1BitI2C, Ecrire1BitI2C      
+;       Param√®tres d'entree :    vOct       
+;       Param√®tres de sortie :   vUnBit            
+;       Variables utilisees :	vCompteur, BITX, vOct, vAck, vUnBit
+;       Include :    
+;       Equate :                 
+;       #Define :  BITX              
+;                                               
+;******************************************************************************
+Lire8BitsI2C
+    movlw .8
+    movwf vCompteur
+TacheLire8b
+    rlf vOct
+    bcf STATUS,C
+    call Lire1BitI2C
+    btfsc BITX
+    goto Bita1
+    goto Bita0
+    
+Bita1
+    bsf vOct,0
+    goto SuiteLire8b
+Bita0
+    bcf vOct,0
+    
+SuiteLire8b
+    decfsz vCompteur,F
+    goto TacheLire8b
+    movfw vAck
+    movwf vUnBit
+    call Ecrire1BitI2C
+    return
+    
+    
+; fin routine Lire8BitsI2C-----------------------------------------------------
+
+
+
+;**************************  Ecrire8BitsI2C ***********************************
+;       Nom de la fonction : Ecrire8BitsI2C
+;       Auteur :         
+;       Date de creation :                          
+;       Modification :  
+;       Description :   Routine d'ecriture d'un octet de donnee vers
+;                       le dispositif I2C.
+;                       L'octet a transmettre est dans la variable __vOct______ 
+;                       avant l'appel de la fonction.
+;                       Parlez de la gestion du Ack                                
+;       Fonctions appelees :  Ecrire1BitI2C, Lire1BitI2C      
+;       Param√®tres d'entree :  vOct
+;       Param√®tres de sortie :     
+;       Variables utilisees : 
+;       Include :     
+;       Equate :              
+;       #Define :       
+;                                               
+;******************************************************************************
+Ecrire8BitsI2C
+    movlw .8
+    movwf vCompteur
+
+TacheEcrire8b
+    btfsc vOct,7
+    goto EcrireUn
+    goto EcrireZero
+	
+EcrireUn
+    BSF BITX
+    call Ecrire1BitI2C
+    goto SuiteEcrire8b
+EcrireZero
+    BCF BITX
+    call Ecrire1BitI2C
+    goto SuiteEcrire8b
+
+SuiteEcrire8b
+    bcf STATUS,C
+    rlf vOct ;for left shift
+    decfsz vCompteur,F
+    goto TacheEcrire8b
+    call Lire1BitI2C
+    return	
+
+; fin routine Ecrire8BitsI2C---------------------------------------------------
+ 
+ 
+
+;***************************** EcrireMemI2C ***********************************
+;       Nom de la fonction : EcrireMemI2C                                      
+;       Auteur :                                          
+;       Date de creation :                                  
+;       Modification :                               
+;       Description :   Routine de transmission d'un octet de donnee          
+;                       vers la memoire I2C (24LC32).
+;                       Genere les Start et les Stop. 
+;                       Avant l'appel de la fonction: 
+;                          Decrire les parametres d'entrees.
+;                       A la sortie de la fonction:
+;                          Decrire les parametres de sortie.
+;                       Une fois l'ecriture effectuee, il faut un delai 
+;                       d'environ 5 ms (Write Time).                        
+;                                                                             
+;       Fonctions appelees :  Ecrire8BitsI2C, StartBitI2C, StopBitI2C, DelaisI5ms   
+;       Param√®tres d'entree : vADRH, vADRL, vDATA                            
+;       Param√®tres de sortie :  vOct                                       
+;       Variables utilisees : 
+;       Include :                                          
+;       Equate :                                                    
+;       #Define :                                                     
+;                                                                             
+;******************************************************************************      
+
+EcrireMemI2C    
+    call StartBitI2C
+    movlw 0xA0
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    movfw vADRH
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    movfw vADRL
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    movfw vDATA
+    movwf vOct
+    call Ecrire8BitsI2C
+    call StopBitI2C
+    call Delais5ms
+    return
+; fin routine EcrireMemI2C-----------------------------------------------------
+
+
+
+;****************************** LireMemI2C ************************************
+;       Nom de la fonction : LireMemI2C                  
+;       Auteur :           
+;       Date de creation :                            
+;       Modification :  
+;       Description :   Routine de reception d'un octet de donnee 
+;                       provenant de la memoire I2C (24LC32).
+;                       Genere les Start et les Stop. 
+;                       Avant l'appel de la fonction: 
+;                          Decrire les parametres d'entrees.
+;                       A la sortie de la fonction:
+;                          Decrire les parametres de sortie. 
+;                       
+;       Fonctions appelees : Ecrire8BitsI2C,Lire8BitsI2C,StartBitI2C,StopBitI2C             
+;       Param√®tres d'entree :  vADRH, vADRL, vOct                 
+;       Param√®tres de sortie : vDATA                
+;       Variables utilisees :  
+;       Include :              
+;       Equate :                          
+;       #Define : 
+;                        
+;******************************************************************************
+
+LireMemI2C
+    call StartBitI2C
+    movlw 0xA0
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    movfw vADRH
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    movfw vADRL
+    movwf vOct
+    call Ecrire8BitsI2C
+    call StopBitI2C
+    
+    call StartBitI2C
+    movlw 0xA1
+    movwf vOct
+    call Ecrire8BitsI2C
+    
+    call Lire8BitsI2C
+    movfw vOct
+    movwf vDATA
+    call StopBitI2C
+    return
+; fin routine LireMemI2C-------------------------------------------------------
+
+
+
+;******************************** Delai5us ************************************
+;  Nom de la fonction : Delai5us      
+;  Auteur :  Malbrouck Harold  
+;       Date de creation :              
+;  Description :   Routine de delai de 5 us.
+;       Calcul du delai:
+; 
+;              
+;  Fonctions appelees :        
+;  Param√®tres d'entree :        
+;  Param√®tres de sortie :        
+;  Variables utilisees :    
+;  Equate :      
+;  #Define :      
+;              
+;******************************************************************************
+Delais5us			;Fonction de d√©lai de 5 usec
+     NOP
+     NOP
+     NOP
+     NOP
+     NOP
+     NOP
+     return
+
+; fin routine Delai5us---------------------------------------------------------
+     
+;******************************** Delai1ms ************************************
+;  Nom de la fonction : Delai1ms      
+;  Auteur :  Malbrouck Harold  
+;       Date de creation :              
+;  Description :   Routine de delai de 1 ms.
+;       Calcul du delai:
+; 
+;              
+;  Fonctions appelees :        
+;  Param√®tres d'entree :        
+;  Param√®tres de sortie :        
+;  Variables utilisees :    
+;  Equate :      
+;  #Define :      
+;              
+;******************************************************************************
+Delais1ms
+     movlw  .152
+     movwf  vCompteur1ms
+Encore1ms     
+     call Delais5us
+     decfsz vCompteur1ms,F
+     goto Encore1ms
+     return
+; fin routine Delai1ms---------------------------------------------------------
+     
+     ;******************************** Delais5ms ************************************
+;  Nom de la fonction : Delais5ms      
+;  Auteur : Malbrouck Harold   
+;       Date de creation :              
+;  Description :   Routine de delai de 5 ms.
+;       Calcul du delai:
+; 
+;              
+;  Fonctions appelees :        
+;  Param√®tres d'entree :        
+;  Param√®tres de sortie :        
+;  Variables utilisees :    
+;  Equate :      
+;  #Define :      
+;              
+;******************************************************************************
+Delais5ms
+     movlw .5
+     movwf vCompteur5ms
+Encore5ms
+     call Delais1ms
+     decfsz vCompteur5ms,F
+     goto Encore5ms
+     return
+; fin routine Delai5ms---------------------------------------------------------
+     
+;****************************** Interruption **********************************
+Interruption
+
+;    movwf     w_temp         ; save off current W register contents
+;    movf      STATUS,w       ; move STATUS register into W register
+;    movwf     status_temp    ; save off contents of STATUS register
+;    movf      PCLATH,W       ; move PCLATH register into W register
+;    movwf     pclath_temp    ; save off contents of PCLATH register
+
+; isr code can go here or be located as a call subroutine elsewhere
+
+
+;    movf      pclath_temp,w  ; retrieve copy of PCLATH register
+;    movwf     PCLATH         ; restore pre-isr PCLATH register contents
+;    movf      status_temp,w  ; retrieve copy of STATUS register
+;    movwf     STATUS         ; restore pre-isr STATUS register contents
+;    swapf     w_temp,f
+;    swapf     w_temp,w       ; restore pre-isr W register contents
+    retfie                   ; return from interrupt
+
+; fin de la routine Interruption-----------------------------------------------
+
 
 
         END                       ; directive 'end of program'
+
+
+
+
+
