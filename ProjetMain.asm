@@ -1053,75 +1053,25 @@ Main
 		    ; StartBitI2C.
     call  InitRS232
     call  SDA1	    ; Condition initial SDA = SCL =1
-    call  SCL1
-    bcf   DEL2
-    
+    call  SCL1 
     
     call  ResetPCA9685
     call  SetFreqPCA9685
+    Main    
+     call    InitPic
+     call    ResetPCA9685
+     call    SetFreqPCA9685
+     
+Boucle127x256
+     movlw   0x7F
+     movwf   vBoucleHigh
+     movlw   0x00
+     movwf   vBoucleLow
+Encore    
+     
+     goto    Encore
     
-    movlw .0
-    movwf vSet
-
-Pwmloop         ;Permet de set le PWM
-    movfw vSet
-    movwf vPwm
-    movlw 0x00
-    movwf vMoteur
-    call  SetPWMPCA9685
-    
-Btnloopcheck    ;Vérifie l'état des boutons
-    btfsc SW1
-    goto  Sw2
-    goto  Sw1
-    btfsc SW2
-    goto  Sw2
-    goto  Btnloopcheck
-    
-Sw1              
-    call  Delais5ms
-    call  Delais5ms
-    btfsc SW1
-    goto  Sw2
-    movlw .206
-    incf  vSet  
-    incf  vSet
-    incf  vSet
-    subwf vSet,w
-    btfsc CARRY    
-    decf  vSet
-    goto  MovSw1
-    goto  Pwmloop
-
-Sw2
-    call  Delais5ms
-    call  Delais5ms
-    btfsc SW2
-    goto  Btnloopcheck
-    movlw .3
-    subwf vSet,f
-    btfss CARRY
-    incf  vSet
-    goto  MovSw2
-    goto  Pwmloop
-    
-MovSw1 
-    btfss SW1
-    goto  MovSw1
-    call  Delais5ms
-    call  Delais5ms
-    btfss SW1
-    goto  MovSw1
-    goto  Pwmloop
-    
-MovSw2
-    btfss SW2
-    goto  MovSw2
-    call  Delais5ms
-    call  Delais5ms
-    btfss SW2
-    goto  MovSw2
-    goto  Pwmloop
+ 
 ;****************************** ROUTINES **************************************
 
 
