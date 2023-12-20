@@ -112,7 +112,7 @@ void vInitTimer0(void)
 // ************************************************************************************************
 {
 	TMOD |= 0x01;        //0x01 set le timer 0 as a 16-bit timer
-	TH0   = 0x4C;        //Initialize le timer 0 pour 10ms
+	TH0   = 0x4C;        //Initialize le timer 0 pour 50ms
         TL0   = 0x00;        //^^^^^^^^
 	TR0   = 1;           //start timer 0
 	TF0   = 0;           //met le flag a 0
@@ -134,4 +134,28 @@ void vInitIntTimer0(void)
 {
 	TF0 = 1;          //Enable timer 0 interruption
 }
+
 // ************************************************************************************************
+void IntTimer0(void) interrupt 1
+//
+//  Auteur:Xavier Champoux 	
+//  Date de création :  10/12/2023
+//  Version 1.0
+//
+//  Description: active l'interuption du timer 0
+//  Paramètres d'entrées : Aucun
+//  Paramètres de sortie : Aucun
+//  Notes     		 			 : Aucun
+//
+// ************************************************************************************************
+{
+	if (ucComptTimer <= 6)
+	{
+		ucComptTimer++;
+	}
+	else
+	{
+		ucComptTimer = 0
+	}
+	TF0 = 0;
+}
