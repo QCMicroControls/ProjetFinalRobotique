@@ -78,7 +78,7 @@ LirePince
      movwf     vChannelAD
      call      LectureADC
      movfw     vADCHaut
-     movwf     vBalancePoid
+     movwf     vPincePres
      BANK1
      clrf      ANSEL
      BANK0
@@ -138,25 +138,25 @@ LireBalance
 ;                                               
 ;******************************************************************************
 LectureADC
-     movlw vChannelAD
-     movwf ADCON0
-
+     movlw   vChannelAD
+     movwf   ADCON0
+     call    Delai1mS
 CONVERT 
-     btfsc  ADCON0, GO_DONE ; Check if conversion is still in progress
-     goto   CONVERT ; Wait for the previous conversion to finish
-     bsf    ADCON0, GO_DONE ; Start the conversion
+     btfsc   ADCON0, GO_DONE ; Check if conversion is still in progress
+     goto    CONVERT ; Wait for the previous conversion to finish
+     bsf     ADCON0, GO_DONE ; Start the conversion
      nop   
      nop
 
 ; Wait for conversion to complete
 WAIT    
-             btfsc ADCON0, GO_DONE ; Check if conversion is still in progress
-             goto WAIT ; Wait until the conversion is complete
+     btfsc   ADCON0, GO_DONE ; Check if conversion is still in progress
+     goto    WAIT ; Wait until the conversion is complete
 
 ; Retrieve ADC result
-     movfw    ADRESH, W ; Move the high byte of the result to W
+     movfw    ADRESH ; Move the high byte of the result to W
      movwf    vADCHaut ; Store it in a variable if needed
-     movfw    ADRESL, W ; Move the low byte of the result to W
+     movfw    ADRESL ; Move the low byte of the result to W
      movwf    vADCBas ; Store it in a variable if needed
   
 
