@@ -53,9 +53,9 @@ unsigned char ucComptTimer;
 unsigned char ucSeq = 0;
 unsigned char xdata ucEcranDebutTab [4][21] = { {"1:66 2:66 3:66 4:66 "},
                                                 {"5:66 X:FF Y:FF P:FF "},
-																    				    {"B:FF Bloc:--        "},
-																		    		    {"05 Seq:0 Step:0 OffL"}
-																			        };
+					        {"B:FF Bloc:--        "},
+					        {"05 Seq:0 Step:0 OffL"}
+								         };
 //unsigned char xdata ucSeqData [][][];																				
 // *************************************************************************************************
 void main (void)
@@ -76,15 +76,22 @@ void main (void)
 	stState.ucCoude = MILIEU;     //^^^^^^^^^^^^^^^^^^^^^^^^
 	stState.ucPoignet = MILIEU;   //^^^^^^^^^^^^^^^^^^^^^^^^
 	stState.ucPince = OUVERT;     //^^^^^^^^^^^^^^^^^^^^^^^^
-//	ALIMENTER LE CLAVIER I2C
-//	for(i = DELAI, i = DELAI, i = DELAI)
-//		{
-			vInitPortSerie();
-			vInitTimer0();        //TIMER0 À 50MS
-	    vInitialiseLCD();     //INITIALISE LE LCD
-//			//INITIALISATION POSITION DU BRAS
-	    vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
-//		}
+if (ucComptTimer == 4)
+{
+vInitPortSerie();
+vInitTimer0();        //TIMER0 À 50MS
+vInitialiseLCD();     //INITIALISE LE LCD
+vEcrireMemI2C(0x47, 0x20); //ENVOIE GO POUR DEBUT TRAME
+vEcrireMemI2C(0x4F, 0x21); //^^^^^^^^
+
+vEcrireMemI2C(0x42, 0x22); //INITIALISATION POSITION DU BRAS
+vEcrireMemI2C(0x42, 0x23); //INITIALISATION POSITION DU BRAS
+vEcrireMemI2C(0x42, 0x24); //INITIALISATION POSITION DU BRAS
+vEcrireMemI2C(0x42, 0x25); //INITIALISATION POSITION DU BRAS
+vEcrireMemI2C(0xFF, 0x26); //INITIALISATION POSITION DU BRAS
+
+vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
+}
 //////////////PROGRAMME PRINCIPAL///////////////////////////////////////////////////////////////////
 	while (1)
 	{
