@@ -204,7 +204,7 @@ void main (void)
 		if (ucComptTimer == 4)  //SI 200 MS DE PASSEES
 		{
 //			vAfficheEtat();       //AFFICHE L'ETAT DU SYSTEME
-	  }
+	        }
 		if (ucSequenceActive == 0)     //si pas de sequence active
 		{
 			if (ucTouche != 0) //SUPPOSE ETRE SI TOUCHE PESEE, MAIS JE CROIS PAS QUE CE SOIT LA BONNE CONDITION
@@ -222,3 +222,29 @@ void main (void)
 // *************************************************************************************************
 // FONCTIONS lOCALES
 // *************************************************************************************************
+// **************************************************************************************************
+void vTraiteTrame ()
+//  Auteur: Xavier Champoux 	
+//  Date de création :  20 décembre 2023
+//  Version 1.0
+//
+//  Description					 : Traite la trame recue du pic
+//  Paramètres d'entrées : Aucune
+//  Paramètres de sortie : Aucune
+//
+//  Notes     		       : Aucune
+// *************************************************************************************************
+{
+ ucComptTouche = 0;
+ //SAUVEGARDE DANS LA STRUCTURE LES VALEURS PRESENTES DANS LE BUFFER DE RECEPTION
+ //TRANSMET LA POSITION AU PIC POUR SYNCHRO LES ECHANGES
+ vEcrireMemI2C(0x47, 0x); //ENVOIE GO POUR DEBUT TRAME
+ vEcrireMemI2C(0x4F, 0x); //^^^^^^^^ 
+
+ vEcrireMemI2C(stState.Base, 0x);
+ vEcrireMemI2C(stState.Epaule, 0x);
+ vEcrireMemI2C(stState.Coude, 0x);
+ vEcrireMemI2C(stState.Poignet, 0x);
+ vEcrireMemI2C(stState.Pince, 0x);
+ vEcrireMemI2C(ucCheckSum, 0x);
+}
