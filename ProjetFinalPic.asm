@@ -205,6 +205,8 @@ Encore
      call LireCoord 
      call LirePince
      call LireBalance
+     call TransmetTramme
+
 
     goto    Encore
 
