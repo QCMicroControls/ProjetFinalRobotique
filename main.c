@@ -1,15 +1,8 @@
 /**************************************************************************************************
 Nom du fichier : main.c
-Auteur : Stéphane Deschênes                  
-Date de création : 20 octobre 2023
-
-	Ce programme est fourni avec le lab 05 du cours 247-336.
-
-Versions
-0.1 - Premiere version
-0.2 - Progression, ajout de commentaires importants.
-0.3 - Version fournie pour le laboratoire #5
-0.4 - Projgramme pour le laboratoire #7
+Auteur : Xavier Champoux, Charles-Olivier Lemelin & Harold Malbrouck                  
+Date de crÃ©ation : 8 decembre 2023
+	Ce programme contient le main du rpojet final de 3eme session de l'equipe numero 4
 	
 ***************************************************************************************************/
 
@@ -17,12 +10,12 @@ Versions
 //  INCLUDES
 // *************************************************************************************************	
 
-#include "ds89c450.h"				// Définition des bits et des registres du microcontrôleur
+#include "ds89c450.h"	    // DÃ©finition des bits et des registres du microcontrÃ´leur
 #include <stdio.h>          // Prototype de declarations des fonctions I/O	
-#include "Dallas.h"
-#include "LCD.h"
-#include "ClavierI2C.h"
-#include "I2C.h"
+#include "Dallas.h"         // Header file pour les fonctions liees a la carte dallas
+#include "LCD.h"            // Header file pour les fonctions liees a l'ecran LCD
+#include "ClavierI2C.h"     // Header file pour les fonctions liees au clavier I2C
+#include "I2C.h"            // Header file pour les fonctions liees a la commnication I2C
 
 // *************************************************************************************************
 //  CONSTANTES
@@ -67,11 +60,11 @@ unsigned char xdata ucEcranDebutTab [4][21] = { {"1:66 2:66 3:66 4:66 "},
 // *************************************************************************************************
 void main (void)
 //
-//  Auteur: Stéphane Deschênes 
+//  Auteur: StÃ©phane DeschÃªnes 
 //
-//  Description: Appelé lorsque le programme démarre
-//  Paramètres d'entrées 	: Aucun
-//  Paramètres de sortie 	: Aucun
+//  Description: AppelÃ© lorsque le programme dÃ©marre
+//  ParamÃ¨tres d'entrÃ©es 	: Aucun
+//  ParamÃ¨tres de sortie 	: Aucun
 //  Notes     		 				: Aucune
 //
 // *************************************************************************************************
@@ -87,7 +80,7 @@ void main (void)
 //	for(i = DELAI, i = DELAI, i = DELAI)
 //		{
 			vInitPortSerie();
-			vInitTimer0();        //TIMER0 À 50MS
+			vInitTimer0();        //TIMER0 Ã€ 50MS
 	    vInitialiseLCD();     //INITIALISE LE LCD
 //			//INITIALISATION POSITION DU BRAS
 	    vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
