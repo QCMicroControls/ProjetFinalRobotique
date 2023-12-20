@@ -153,9 +153,5 @@ void IntTimer0(void) interrupt 1
 	{
 		ucComptTimer++;
 	}
-	else
-	{
-		ucComptTimer = 0
-	}
 	TF0 = 0;
 }
