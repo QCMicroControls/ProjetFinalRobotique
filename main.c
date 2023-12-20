@@ -37,7 +37,7 @@ struct STServoPosition
 		unsigned char ucCoude;
 		unsigned char ucPoignet;
 		unsigned char ucPince;
-	}stState;
+	}struct STServoPosition stState;
 // *************************************************************************************************
 // VARIABLES GLOBALES
 // *************************************************************************************************
@@ -57,7 +57,7 @@ unsigned char xdata ucEcranDebutTab [4][21] = { {"1:66 2:66 3:66 4:66 "},
 					        {"05 Seq:0 Step:0 OffL"}
 								         };
                       // Seq 0  (case A3)
-unsigned char code ucSeqPick[7][10][5] =  {{{0x66,0x40,0x01,0x5B,0x01}, 
+unsigned char xdata ucSeqPick[7][10][5] = {{{0x66,0x40,0x01,0x5B,0x01}, 
                                             {0x6A,0x52,0x1B,0x61,0x01},  
                                             {0x6A,0x69,0x1F,0x4D,0x01}, 
                                             {0x6A,0x69,0x2D,0x87,0x01},
@@ -181,9 +181,9 @@ vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
 			stState.ucPince    = SeqData [ucSeq] [Step] [4];
 		}
 		ucTouche = ucReadKeyI2C();
-		if (ucTouche == 0x20)
+		if (ucTouche != 0x20)
 		{
-			//TRAITER LA TOUCHE
+		  vTraiteTouche (ucTouche);
 		}
 		
 		//if(TRAME RECUE)
