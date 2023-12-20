@@ -1,8 +1,8 @@
 /****************************************************************************************
    Nom du fichier : I2C.h
-   Auteur : Stéphane Deschênes                  
-      Date de création : 19-03-2006 
-        Fichier de déclaration et de définition pour les fonctions de traitement du 
+   Auteur : Xavier Champoux                  
+      Date de crÃ©ation : 06 septembre 2023
+        Fichier de dÃ©claration et de dÃ©finition pour les fonctions de traitement du 
         I2C.
   
 ****************************************************************************************/
@@ -26,24 +26,24 @@
 // *************************************************************************************************
   
 // *************************************************************************************************
-//  Auteur: Stéphane Deschênes, basé sur des fonctions faites par Alain Champagne le 30 mai 2007
-//  Date de création :  28 mai 2021
+//  Auteur: Xavier Champoux, basÃ© sur des fonctions faites par StÃ©phane Deschenes le 28 mai 2021
+//  Date de crÃ©ation :  06 septembre 2023
 //
 //  Description: provoque un "start-condition" I2C sur les lignes SDA et SCL
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		 	 : Aucune
 //
 void vI2CStartBit(void);
 // *************************************************************************************************
 
 // *************************************************************************************************
-//  Auteur: Stéphane Deschênes, basé sur des fonctions faites par Alain Champagne le 30 mai 2007
-//  Date de création :  28 mai 2021
+//  Auteur: Xavier Champoux, basÃ© sur des fonctions faites par StÃ©phane Deschenes le 28 mai 2021
+//  Date de crÃ©ation :  06 septembre 2023
 //
 //  Description: provoque un "stop-condition" I2C sur les lignes SDA et SCL
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		 : Aucune
 //
 void vI2CStopBit(void);
@@ -51,17 +51,17 @@ void vI2CStopBit(void);
 
 
 // *************************************************************************************************
-//	Auteur: Stéphane Deschênes, basé sur des fonctions faites par Alain Champagne le 30 mai 2007
-//  Date de création :  28 mai 2021
+//	Auteur: Xavier Champoux, basÃ© sur des fonctions faites par StÃ©phane Deschenes le 28 mai 2021
+//  Date de crÃ©ation : 06 septembre 2023
 //
-//	Description :	Fonction de réception de 8 bits de donnée 
+//	Description :	Fonction de rÃ©ception de 8 bits de donnÃ©e 
 //			          provenant d'une communication I2C.
 //
-//	Modification - Stéphane Deschênes 	
-//	30-07-2019  Ajout de la valeur du ACK en paramètre
+//	Modification - StÃ©phane DeschÃªnes 	
+//	30-07-2019  Ajout de la valeur du ACK en paramÃ¨tre
 //
-//	Paramètres d'entrée : 	Valeur du ack voulu 0 = Ack  1 = NACK		
-//	Paramètres de sortie : 	Byte reçu.		
+//	ParamÃ¨tres d'entrÃ©e : 	Valeur du ack voulu 0 = Ack  1 = NACK		
+//	ParamÃ¨tres de sortie : 	Byte reÃ§u.		
 //
 unsigned char ucI2CLire8Bits (bit bAckValue);
 // *************************************************************************************************
@@ -69,15 +69,14 @@ unsigned char ucI2CLire8Bits (bit bAckValue);
 
 
 // *************************************************************************************************
-//  Auteur: Stéphane Deschênes, basé sur des fonctions faites par Alain Champagne le 30 mai 2007
-//  Date de création :  28 mai 2021
+//  Auteur: Xavier Champoux, basÃ© sur des fonctions faites par StÃ©phane Deschenes le 28 mai 2021
+//  Date de crÃ©ation :  06 septembre 2023
 //  
-//	Modification - Stéphane Deschênes 	
-//	30-07-2019  Ajout du retour du ACK
+//	Modification:
 //
-//  Description          : Fonction d'envoie de 8 bits de données en I2C.
-//  Paramètres d'entrées : Octet que l'on veut envoyer
-//  Paramètres de sortie : État du ack venant de l'esclave
+//  Description          : Fonction d'envoi de 8 bits de donnÃ©es en I2C.
+//  ParamÃ¨tres d'entrÃ©es : Octet que l'on veut envoyer
+//  ParamÃ¨tres de sortie : Ã‰tat du ack venant de l'esclave
 //  Notes     		 			 : Aucune
 //
 void vI2CEcrire8Bits(unsigned char ucTxData);

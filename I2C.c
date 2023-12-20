@@ -1,13 +1,13 @@
 /**************************************************************************************************
-Nom du fichier : Lab2I2C
+Nom du fichier : I2C.C
 Auteur : Xavier Champoux                 
-Date de création : 06-09-2023
+Date de crÃ©ation : 06-09-2023
 Version 1.0
 	 
-	Ce programme sert à la créationde fonctions pour la mémoire 24LC32 et la communication I2C
+	Ce programme sert Ã  la crÃ©ationde fonctions pour la mÃ©moire 24LC32 et la communication I2C
 		
 		Versions:
-		1.0 - 06 Septembre 2023:  Première version 
+		1.0 - 06 Septembre 2023:  PremiÃ¨re version 
 	
 ***************************************************************************************************/
 
@@ -17,7 +17,7 @@ Version 1.0
 
 #include <stdio.h>          // Prototype de declarations des fonctions I/O
 	
-#include "ds89c450.h"				// Définition des bits et des registres du microcontrôleur
+#include "ds89c450.h"				// DÃ©finition des bits et des registres du microcontrÃ´leur
 #include "Dallas.h"
 #include "I2C.h"
 // *************************************************************************************************
@@ -52,14 +52,14 @@ bit blI2CLire1Bit();
 
 void vI2CStartBit(void)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  20 mai 2021
+//  Auteur: Xavier Champoux	
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Effectue un start bit sur SDA et SCL
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : 	Passage de 1 à 0 sur la ligne SDA durant un niveau haut de SCL
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : 	Passage de 1 Ã  0 sur la ligne SDA durant un niveau haut de SCL
 // *************************************************************************************************
 {
 	//NOTE: I2C_DELAI est un #define qui est = 1
@@ -76,13 +76,13 @@ void vI2CStartBit(void)
 void vI2CStopBit(void)
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  06 septembre 2023
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Effectue un stop bit sur SDA et SCL
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : 	Passage de 0 à 1 sur la ligne SDA durant un niveau haut de SCL
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : 	Passage de 0 Ã  1 sur la ligne SDA durant un niveau haut de SCL
 // *************************************************************************************************
 {
 	//NOTE: I2C_DELAI est un #define qui est = 1
@@ -98,14 +98,14 @@ void vI2CStopBit(void)
 // *************************************************************************************************
 void vI2CDelai (unsigned int iTemps)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  20 mai 2021
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
-//  Description: Délai pour la communication I2C
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Variables utilisées  : Aucun
+//  Description: DÃ©lai pour la communication I2C
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Variables utilisÃ©es  : Aucun
 //	Equate							 : Aucun
 //	#Define	   					 : Aucun
 // *************************************************************************************************
@@ -119,13 +119,13 @@ void vI2CDelai (unsigned int iTemps)
 	void vI2CEcrire1Bit(bit bBit)
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  06 septembre 2023
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Ecrire un bit sur SDA dans une communicatgion I2C
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : Écriture d'un bit 
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : Ã‰criture d'un bit 
 // *************************************************************************************************
 {
 	SCL = 0;
@@ -141,13 +141,13 @@ void vI2CDelai (unsigned int iTemps)
 	bit blI2CLire1Bit()
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  06 septembre 2023
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Lire un bit sur SDA dans une communicatgion I2C
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : Écriture d'un bit 
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : Ã‰criture d'un bit 
 // *************************************************************************************************
 {
 	bit bLecture;
@@ -167,13 +167,13 @@ void vI2CDelai (unsigned int iTemps)
 void vI2CEcrire8Bits(unsigned char ucTxData)
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  06 septembre 2023
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Lire un bit sur SDA dans une communicatgion I2C
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : Écriture d'un bit 
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : Ã‰criture d'un bit 
 // *************************************************************************************************
 {
 	unsigned char i;
@@ -197,13 +197,13 @@ void vI2CEcrire8Bits(unsigned char ucTxData)
 unsigned char ucI2CLire8Bits (bit bAckValue)
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  06 septembre 2023
+//  Date de crÃ©ation :  06 septembre 2023
 //  Version 1.0
 //
 //  Description: Lire un bit sur SDA dans une communicatgion I2C
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
-//  Notes     		       : Écriture d'un bit 
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
+//  Notes     		       : Ã‰criture d'un bit 
 // *************************************************************************************************
 {
 	unsigned char ucRecu = 0x00;
