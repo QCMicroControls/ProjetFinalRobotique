@@ -1,8 +1,8 @@
 /****************************************************************************************
-   Nom du fichier : I2C.h
-   Auteur : Stéphane Deschênes                  
-      Date de création : 19-03-2006 
-        Fichier de déclaration et de définition pour les fonctions de traitement du 
+   Nom du fichier :LCDC.h
+   Auteur : Xavier Champoux                 
+      Date de crÃ©ation : 20-09-2023 
+        Fichier de dÃ©claration et de dÃ©finition pour les fonctions de traitement du 
         I2C.
   
 ****************************************************************************************/
@@ -28,73 +28,73 @@
 // *************************************************************************************************
 void vInitialiseLCD(void);
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xaveir Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 // *************************************************************************************************
 void vLcdEcrireCaract(unsigned char ucCaract, unsigned char ucLigne, unsigned char ucColonne);
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 // *************************************************************************************************
 void vAfficheLigneLCD(unsigned char ucTab[],unsigned char ucLigne);
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 // *************************************************************************************************
 void vAfficheLCDComplet(unsigned char ucTab[4][21]);
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 // *************************************************************************************************
 void vLoadCGRAM(unsigned char ucTab[8][8]);
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 // *************************************************************************************************
 void vEffaceLCD();
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 #endif 
