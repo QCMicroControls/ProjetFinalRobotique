@@ -156,7 +156,7 @@ void main (void)
  vInitTimer0();        //TIMER0 À 50MS
  if (ucComptTimer == 4)
  {
- vInitPortSerie();
+ vInitPortSerie();     //INITIALISE LE PORT SERIE
  vInitialiseLCD();     //INITIALISE LE LCD
  vEcrireMemI2C(0x47, 0x20); //ENVOIE GO POUR DEBUT TRAME
  vEcrireMemI2C(0x4F, 0x21); //^^^^^^^^ 
