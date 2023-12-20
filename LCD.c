@@ -1,13 +1,13 @@
 /**************************************************************************************************
 Nom du fichier : LCD.c
 Auteur : Xavier Champoux                 
-Date de création : 06-09-2023
+Date de crÃ©ation : 06-09-2023
 Version 1.0
 	 
-	Ce programme sert à la créationde fonctions pour la mémoire 24LC32 et la communication I2C
+	Ce programme sert Ã  la crÃ©ationde fonctions pour la mÃ©moire 24LC32 et la communication I2C
 		
 		Versions:
-		1.0 - 06 Septembre 2023:  Première version 
+		1.0 - 06 Septembre 2023:  PremiÃ¨re version 
 	
 ***************************************************************************************************/
 
@@ -17,7 +17,7 @@ Version 1.0
 
 #include <stdio.h>          // Prototype de declarations des fonctions I/O
 	
-#include "ds89c450.h"				// Définition des bits et des registres du microcontrôleur
+#include "ds89c450.h"				// DÃ©finition des bits et des registres du microcontrÃ´leur
 #include "LCD.h"
 // *************************************************************************************************
 //  CONSTANTES
@@ -41,13 +41,13 @@ void vAttendreBusyLcd(void);
 // *************************************************************************************************
 void vAttendreBusyLcd(void)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 {
@@ -60,13 +60,13 @@ void vAttendreBusyLcd(void)
 // *************************************************************************************************
 void vInitialiseLCD(void)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  25-08-2019
+//  Auteur: Xavier Champoux 	
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 {
@@ -74,7 +74,7 @@ void vInitialiseLCD(void)
   
 	for(i = 0; i < 12000; i++);	//Delai d'activation de l'ecran au demarrage	
   vAttendreBusyLcd();
-	*PtrLCDConfig = 0x38;				//Mode écran 8 bit, résolution charactère 5x7, mode 2 lignes
+	*PtrLCDConfig = 0x38;				//Mode Ã©cran 8 bit, rÃ©solution charactÃ¨re 5x7, mode 2 lignes
  	vAttendreBusyLcd();
 	*PtrLCDConfig = 0x0C;				//Display on, cursor & brink off
 	vAttendreBusyLcd();
@@ -87,12 +87,12 @@ void vInitialiseLCD(void)
 void vLcdEcrireCaract(unsigned char ucCaract, unsigned char ucLigne, unsigned char ucColonne)
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  20-09-2023
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 {
@@ -105,12 +105,12 @@ void vLcdEcrireCaract(unsigned char ucCaract, unsigned char ucLigne, unsigned ch
 //void vAfficheLigneLCD(unsigned char ucTab[],unsigned char ucLigne)
 ////
 ////  Auteur: Xavier Champoux 	
-////  Date de création :  20-09-2023
+////  Date de crÃ©ation :  20-09-2023
 ////  Version 1.0
 ////
 ////  Description: 
-////  Paramètres d'entrées : Aucun
-////  Paramètres de sortie : Aucun
+////  ParamÃ¨tres d'entrÃ©es : Aucun
+////  ParamÃ¨tres de sortie : Aucun
 ////  Notes     		       : Aucune
 //// *************************************************************************************************
 //{
@@ -124,12 +124,12 @@ void vLcdEcrireCaract(unsigned char ucCaract, unsigned char ucLigne, unsigned ch
 void vAfficheLCDComplet(unsigned char ucTab[4][21])
 //
 //  Auteur: Xavier Champoux 	
-//  Date de création :  20-09-2023
+//  Date de crÃ©ation :  20-09-2023
 //  Version 1.0
 //
 //  Description: 
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		       : Aucune
 // *************************************************************************************************
 {
@@ -151,16 +151,16 @@ void vAfficheLCDComplet(unsigned char ucTab[4][21])
 //// *************************************************************************************************
 //void vEffaceLCD()
 ////
-////  Auteur: Stéphane Deschênes, 
-////  Date de création :  01-09-2019
+////  Auteur: Xavier Champoux
+////  Date de crÃ©ation :  20-09-2023
 ////  Version 1.0
 ////
-////  Description: Fait l'animation demandée, sur la ligne demandée
-////  Paramètres d'entrées : 
-////												 ucTab: Un tableau contenant des caractères voulus à chacune des étapes d'animation
-////												 				Les étapes sont faites ligne par ligne.
+////  Description: Fait l'animation demandÃ©e, sur la ligne demandÃ©e
+////  ParamÃ¨tres d'entrÃ©es : 
+////												 ucTab: Un tableau contenant des caractÃ¨res voulus Ã  chacune des Ã©tapes d'animation
+////												 				Les Ã©tapes sont faites ligne par ligne.
 ////												 ucLigne: Ligne sur laquelle on veut faire l'animation
-////  Paramètres de sortie : Aucun
+////  ParamÃ¨tres de sortie : Aucun
 ////  Notes     		       : Aucune
 //// *************************************************************************************************
 //{
@@ -170,22 +170,22 @@ void vAfficheLCDComplet(unsigned char ucTab[4][21])
 // *************************************************************************************************
 void vLoadCGRAM(unsigned char ucTab[8][8])
 //
-// Auteur: Stéphane Deschênes 
-// Date de création : 01-09-2019
+// Auteur: xavier Champoux 
+// Date de crÃ©ation :20-09-2023
 // Version 1.0
 //
-// Description: Met dans la mémoire CGRAM du contrôleur de LCD un tableau complet 
-// Paramètres d'entrées : Tableau qui contient toutes les caractères spéciaux voulus
-// Paramètres de sortie : Aucun
-// Notes : Sert à créer des caractères spéciaux
+// Description: Met dans la mÃ©moire CGRAM du contrÃ´leur de LCD un tableau complet 
+// ParamÃ¨tres d'entrÃ©es : Tableau qui contient toutes les caractÃ¨res spÃ©ciaux voulus
+// ParamÃ¨tres de sortie : Aucun
+// Notes : Sert Ã  crÃ©er des caractÃ¨res spÃ©ciaux
 // *************************************************************************************************
 {
  unsigned char ucCompteurCaract;
  unsigned char ucCompteurOctetsDansCaract;
- // Boucle pour chacun des 8 caractères
+ // Boucle pour chacun des 8 caractÃ¨res
  for (ucCompteurCaract= 0; ucCompteurCaract < 8; ucCompteurCaract++)
  {
-	// Boucle pour chacune des 8 lignes dans un caractère
+	// Boucle pour chacune des 8 lignes dans un caractÃ¨re
 	for(ucCompteurOctetsDansCaract = 0; ucCompteurOctetsDansCaract < 8; ucCompteurOctetsDansCaract++)
 	{
 		vAttendreBusyLcd();
