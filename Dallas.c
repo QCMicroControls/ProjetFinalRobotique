@@ -1,4 +1,4 @@
-/*****************************Contrôle Carte Dallas*******************************/
+/*****************************ContrÃ´le Carte Dallas*******************************/
 /* 
    Nom du fichier : Dallas.c
    Auteur : Xavier Champoux, Harold Malbrouck, Charles-Olivier Lemelin
@@ -14,7 +14,7 @@ D
 *****************************************************************************************/
 
 //-------------- header files  -----------------
-#include "ds89c450.h"				// Définition des bits et des registres du microcontrôleur
+#include "ds89c450.h"				// DÃ©finition des bits et des registres du microcontrÃ´leur
 #include "Dallas.h"
 #include "I2C.h"
 
@@ -23,18 +23,18 @@ D
 // *************************************************************************************************
 void vInitPortSerie(void)
 //   Auteur : Alain Champagne                  
-//      Date de création : 22-06-06   
-//   Description : Cette fonction initialise les SFRs pour permettre une communication série
-//                 à 57600 bauds sans interruptions. La communication série utilise le timer
-//                 1. On ne pourra donc pas utiliser ce timer lorsque la communication série 
-//                 sera employée.
+//      Date de crÃ©ation : 22-06-06   
+//   Description : Cette fonction initialise les SFRs pour permettre une communication sÃ©rie
+//                 Ã  57600 bauds sans interruptions. La communication sÃ©rie utilise le timer
+//                 1. On ne pourra donc pas utiliser ce timer lorsque la communication sÃ©rie 
+//                 sera employÃ©e.
 //          
-//   Paramètres d'entrée : Aucun.
-//   Paramètres de sortie : Aucun.                
-//   Variables utilisées : Aucun.
+//   ParamÃ¨tres d'entrÃ©e : Aucun.
+//   ParamÃ¨tres de sortie : Aucun.                
+//   Variables utilisÃ©es : Aucun.
 //***************************************************************************************************
 {
-	SCON0 = 0x50;        	// Selectione mode 1, 8-bit avec reception      
+   SCON0 = 0x50;        // Selectione mode 1, 8-bit avec reception      
    TMOD  = TMOD | 0x20; // timer 1, mode 2, 8-bit auto reload        
    TH1   = 0xFF;        // a 11.0592MHz: FA=4800,FD=9600,FE=14400 et FF=28800    
    PCON  = PCON | 0x80; // Le bit SMOD = 1 pour vitesse * 2 du port serie 
@@ -43,17 +43,16 @@ void vInitPortSerie(void)
 }
 
 // *************************************************************************************************
-// Auteur : Alain Champagne		           Date de création : 30-05-2007				      
-// Modification : Pierre Chouinard 21/08/2009
-// Description :  Fonction de transmission d'un octet de donnée 
-//                provenant de la mémoire I2C.
-//							
-		
-// Paramètres d'entrée :  ucData - Octet à écrire
-//												iAdresse - Addresse où l'on veut écrire dans la mémoire.		
-// Paramètres de sortie : Aucun		
-// 						
 void vEcrireMemI2C(unsigned char ucData, unsigned int uiAdr)
+// Auteur : Xavier Champoux		           Date de crÃ©ation : 10-12-2023				      
+// Modification : Harlod Malbrouck & Charles-Olivier Lemelin
+// Description :  Fonction de transmission d'un octet de donnÃ©e 
+//                provenant de la mÃ©moire I2C.
+//							
+// ParamÃ¨tres d'entrÃ©e :  Octet Ã  Ã©crire et Addresse Ã  laquelle on veut l'Ã©crire
+//														
+// ParamÃ¨tres de sortie : Aucun		
+// 						
 // *************************************************************************************************
 {
 	unsigned char ucTemp;
@@ -70,17 +69,16 @@ void vEcrireMemI2C(unsigned char ucData, unsigned int uiAdr)
 }
 
 // *************************************************************************************************
-// Auteur : Alain Champagne		     Date de création : 30-05-2007				      
-// Modification : Pierre Chouinard   21/08/2009
-//              : François Cardinal  29/08/2018
-// Description  : Fonction de réception d'un octet de donnée provenant de la
-//                mémoire I2C. Si le circuit ne répond pas, on l'indique
-//                à l'écran.  
-// Paramètres d'entrée :  iAdr (adresse où l'on veut lire)		
-// Paramètres de sortie : ucData (Valeur lue)		
-// 					
-
 unsigned char ucLireMemI2C(unsigned int uiAdr)
+// Auteur : Xavier Champoux		     Date de crÃ©ation : 10-12-2023				      
+// Modification : Harold Malbrouck & Charles-Olivier Lemelin
+// Description  : Fonction de rÃ©ception d'un octet de donnÃ©e provenant de la
+//                mÃ©moire I2C. Si le circuit ne rÃ©pond pas, on l'indique
+//                Ã  l'Ã©cran.  
+//
+// ParamÃ¨tres d'entrÃ©e :  uiAdr (adresse oÃ¹ l'on veut lire)		
+// ParamÃ¨tres de sortie : ucRecu (Valeur lue)		
+// 					
 // *************************************************************************************************
 {
 	unsigned char ucTemp;
@@ -102,34 +100,34 @@ unsigned char ucLireMemI2C(unsigned int uiAdr)
 // ************************************************************************************************
 void vInitTimer0(void)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  24 sept 2019
+//  Auteur: StÃ©phane DeschÃªnes 	
+//  Date de crÃ©ation :  24 sept 2019
 //  Version 1.0
 //
 //  Description: Initialise le timer 0 pour qu'il fonctionne sur 16 bits
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		 			 : Aucun
 //
 // ************************************************************************************************
 {
 	TMOD |= 0x01;        //0x01 set le timer 0 as a 16-bit timer
 	TH0   = 0x4C;        //Initialize le timer 0 pour 10ms
-  TL0   = 0x00;
+        TL0   = 0x00;        //^^^^^^^^
 	TR0   = 1;           //start timer 0
-	TF0   = 0;
+	TF0   = 0;           //met le flag a 0
 }
 
 // ************************************************************************************************
 void vInitIntTimer0(void)
 //
-//  Auteur: Stéphane Deschênes 	
-//  Date de création :  24 sept 2019
+//  Auteur:Xavier Champoux 	
+//  Date de crÃ©ation :  10/12/2023
 //  Version 1.0
 //
 //  Description: active l'interuption du timer 0
-//  Paramètres d'entrées : Aucun
-//  Paramètres de sortie : Aucun
+//  ParamÃ¨tres d'entrÃ©es : Aucun
+//  ParamÃ¨tres de sortie : Aucun
 //  Notes     		 			 : Aucun
 //
 // ************************************************************************************************
