@@ -153,22 +153,22 @@ void main (void)
 	stState.ucCoude = MILIEU;     //^^^^^^^^^^^^^^^^^^^^^^^^
 	stState.ucPoignet = MILIEU;   //^^^^^^^^^^^^^^^^^^^^^^^^
 	stState.ucPince = OUVERT;     //^^^^^^^^^^^^^^^^^^^^^^^^
-if (ucComptTimer == 4)
-{
-vInitPortSerie();
-vInitTimer0();        //TIMER0 À 50MS
-vInitialiseLCD();     //INITIALISE LE LCD
-vEcrireMemI2C(0x47, 0x20); //ENVOIE GO POUR DEBUT TRAME
-vEcrireMemI2C(0x4F, 0x21); //^^^^^^^^
+ vInitTimer0();        //TIMER0 À 50MS
+ if (ucComptTimer == 4)
+ {
+ vInitPortSerie();
+ vInitialiseLCD();     //INITIALISE LE LCD
+ vEcrireMemI2C(0x47, 0x20); //ENVOIE GO POUR DEBUT TRAME
+ vEcrireMemI2C(0x4F, 0x21); //^^^^^^^^ 
 
-vEcrireMemI2C(0x42, 0x22); //INITIALISATION POSITION DU BRAS
-vEcrireMemI2C(0x42, 0x23); //INITIALISATION POSITION DU BRAS
-vEcrireMemI2C(0x42, 0x24); //INITIALISATION POSITION DU BRAS
-vEcrireMemI2C(0x42, 0x25); //INITIALISATION POSITION DU BRAS
-vEcrireMemI2C(0xFF, 0x26); //INITIALISATION POSITION DU BRAS
+ vEcrireMemI2C(0x42, 0x22); //INITIALISATION POSITION DU BRAS
+ vEcrireMemI2C(0x42, 0x23); //INITIALISATION POSITION DU BRAS
+ vEcrireMemI2C(0x42, 0x24); //INITIALISATION POSITION DU BRAS
+ vEcrireMemI2C(0x42, 0x25); //INITIALISATION POSITION DU BRAS
+ vEcrireMemI2C(0xFF, 0x26); //INITIALISATION POSITION DU BRAS
 
-vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
-}
+ vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
+ }
 //////////////PROGRAMME PRINCIPAL///////////////////////////////////////////////////////////////////
 	while (1)
 	{
