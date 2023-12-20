@@ -76,7 +76,7 @@ StopBitI2C
 Lire1BitI2C	
     call SDA1
     call SCL0
-    call Delais5us
+    call Delai5uS
     call SCL1
     btfsc SDA
     goto Ecrire1
@@ -151,7 +151,7 @@ SuiteLire8Bit
 ;                                               
 ;******************************************************************************
 Ecrire1BitI2C
-     call    Delai5us 
+     call    Delai5uS 
      call    SCL0
      btfsc   vWriteBit,1   ;TOUTS LES BITS DE LA VARIABLE SONT A LA MEME VALEUR
      goto    EcrireSDA1    ;IL FAUT JUSTE EN CHOISIR UN AU HASARD A TESTER
@@ -205,6 +205,34 @@ SuiteEcrire8Bit
      return
 ; fin routine Ecrire8BitsI2C---------------------------------------------------
  
+;***************************** SendAckI2C *************************************
+;       Nom de la fonction : Lire8BitsI2C                      
+;       Auteur :   	Malbrouck, Harold      
+;       Date de creation :                            
+;       Modification :  
+;       Description :   Routine de reception de 8 bits de donnee 
+;                       provenant du dispositif I2C.
+;                       La donnee lue est memorisee dans la variable _________.
+;                       Parlez de la gestion du Ack                                
+;       Fonctions appelees :           
+;       Paramètres d'entree :           
+;       Paramètres de sortie :               
+;       Variables utilisees : 
+;       Include :    
+;       Equate :                 
+;       #Define :                
+;                                               
+;******************************************************************************    
+SendAckI2C
+     movlw    0x00
+     btfsc    vAck,1
+     movlw    0xff
+     movwf    vWriteBit
+     call     Ecrire1BitI2C
+     return
+
+; fin routine SendAckI2C-------------------------------------------------------
+
 
 ;********************************** SDA SCL ***********************************
 ;
