@@ -9,12 +9,12 @@
 ;                                                                             *
 ;                                                                             *
 ;    Author:         Lemelin C.O., Malbrouk H., Champoux X.                   *
-;    Company:        Cégep Limoilou Campus de Québec                          *
-;                    Département des technologies du génie électrique         *
-;                    Technologies des Systèmes Ordinés                        *
+;    Company:        CÃ©gep Limoilou Campus de QuÃ©bec                          *
+;                    DÃ©partement des technologies du gÃ©nie Ã©lectrique         *
+;                    Technologies des SystÃ¨mes OrdinÃ©s                        *
 ;******************************************************************************
 ;                                                                             *
-;    Files required: p16f88.inc  pour la définition des registres du pic16f88 *
+;    Files required: p16f88.inc  pour la dÃ©finition des registres du pic16f88 *
 ;                                                                             *
 ;                                                                             *
 ;                                                                             *
@@ -63,7 +63,7 @@
 
 
      LIST      p=16f88         ; Liste des directives du processeur.
-     #include <p16F88.inc>     ; Définition des registres spécifiques au CPU.
+     #include <p16F88.inc>     ; DÃ©finition des registres spÃ©cifiques au CPU.
      
      
      errorlevel  -302          ; Retrait du message d'erreur 302.
@@ -89,6 +89,8 @@
 ;************************************ I2C *************************************
 #define      SCL               PORTB,0
 #define      SDA               PORTB,1
+#define      BITX	       vUnBit,0     
+
      
 ;************************************ PWM *************************************
 #define      FLAG1             vFlag,1
@@ -109,26 +111,6 @@
 
 ;V   osVariables  EQU     0x20     ; Mettre ici vos Variables
      CBLOCK  0x20
-     vAck
-     vAddHigh
-     vAddLow
-     vBoucleHigh
-     vBoucleLow
-     vChannel
-     vComptByte
-     vCompteur5Ms
-     vCompteurMs
-     vEcrireMem
-     vLireMem
-     vMoteur
-     vPwm
-     vPwmHigh
-     vReadBit
-     vReadByte
-     vReceive
-     vWriteBit
-     vWriteByte
-   
      vTrame0  
      vTrame1  
      vTrame2
@@ -137,15 +119,46 @@
      vTrame5
      vTrame6
      vTrame7
+     
+     vUnBit
+     vAck
+     
+     vAddHigh
+     vAddLow
+     vBoucleHigh
+     vBoucleLow
+     
+     vChannel
+     vComptByte
+     vCompteur5Ms
+     vCompteur1ms
+     vEcrireMem
+     vLireMem
+     
+     vResetInstructPCA
+     vMoteur
+     vPwm
+     vPwmHigh
+     vReadBit
+     vReadByte
+     vReceive
+     vWriteBit
+     vWriteByte
+     
+     vDeviceAddrPCA
+     vInputCharacter
+
 
      vChannelAD
      vADCHaut
      vADCBas
      vPincePres
      vBalancePoid
+     vADCX
+     vADCY
 
-
-endc
+     vTrammeChecksum
+    endc
 
 
 
@@ -167,7 +180,7 @@ Main
      call    ResetPCA9685
      call    SetFreqPCA9685
      
-    ;premiers charactères de la trame
+    ;premiers charactÃ¨res de la trame
 
 
 Boucle127x256
@@ -189,8 +202,9 @@ Encore
      movlw   0xff
      movwf   vBoucleLow
      
-     
-
+     call LireCoord 
+     call LirePince
+     call LireBalance
 
     goto    Encore
 
@@ -198,28 +212,95 @@ Encore
 #include <FonctionsI2C.asm>
 #include <FonctionsADC.asm>
 #include <FonctionsRS232.asm>
+#include <FonctionsPWM.asm>
+#include <FonctionsDelai.asm>
 
-LIRE
+    
 
+;*************************************TransmetTramme***************************
+;	Nom de la fonction : Tx232			
+;	Auteur : Pierre Chouinard		
+;       Date de création : 10-10-2009	
+;       Date de modification : 21-07-2018	A.C. 					      
+;	Description : 	Routine de transmission de la communication série RS-232.
+;                   Sur le PIC16F88. Transmet 8 characteres
+;							
+;	Fonctions appelées : NA		
+;	Paramètres d'entrée : NA	
+;	Paramètres de sortie : NA		
+;	Variables utilisées : NA
+;	Equate : NA
+;	#Define : NA 
+;
+;******************************************************************************
+TransmetTramme
+    movlw   0x47    ;G 
+    call    Tx232
+    movlw   0x6f    ;o
+    call    Tx232
+    movfw   vADCX
+    call    Tx232
+    movfw   vADCY
+    call    Tx232
+    movfw   vPincePres
+    call    Tx232
+    movfw   vBalancePoid
+    call    Tx232
+    movlw   0x00
+    call    Tx232
+    movfw   vTrammeChecksum
+    call    Tx232
+; fin routine Tx232------------------------------------------------------------
 
-*******************************************************************************
+;*************************************Tx232************************************
+;	Nom de la fonction : Tx232			
+;	Auteur : Pierre Chouinard		
+;       Date de création : 10-10-2009	
+;       Date de modification : 21-07-2018	A.C. 					      
+;	Description : 	Routine de transmission de la communication série RS-232.
+;                   Sur le PIC16F88. Transmet 8 characteres
+;							
+;	Fonctions appelées : NA		
+;	Paramètres d'entrée : NA	
+;	Paramètres de sortie : NA		
+;	Variables utilisées : NA
+;	Equate : NA
+;	#Define : NA 
+;
+;******************************************************************************
+TrammeChecksumSend
+    clrf    vTrammeChecksum
+    movlw   0x47
+    addwf   vTrammeChecksum
+    movlw   0x6f
+    addwf   vTrammeChecksum
+    movfw   vADCX
+    addwf   vTrammeChecksum
+    movfw   vADCY
+    addwf   vTrammeChecksum
+    movfw   vPincePres
+    addwf   vTrammeChecksum
+    movfw   vBalancePoid
+    addwf   vTrammeChecksum
+    
+;*******************************************************************************
 ;                                 routines standard                           : 
-*******************************************************************************
+;*******************************************************************************
 
 ;******************************* InitPic **************************************
 ;       Nom de la fonction : InitPic                    
 ;       Auteur : Alain Champagne
 ;       Date de creation : 23-09-2018                                
 ;       Description :      Routine d'initiation des registres du PIC.
-;                          - RP1 à 0 pour être toujours dans Bank 0 et 1,
-;                          - Désactiver les interruptions,
-;                          - Désactiver les entrées analogiques,
-;                          - PortA en entrée,
-;                          - PortB en entrée sauf: Bits I2C et LEDs en sortie.
+;                          - RP1 Ã  0 pour Ãªtre toujours dans Bank 0 et 1,
+;                          - DÃ©sactiver les interruptions,
+;                          - DÃ©sactiver les entrÃ©es analogiques,
+;                          - PortA en entrÃ©e,
+;                          - PortB en entrÃ©e sauf: Bits I2C et LEDs en sortie.
 ;                                                       
 ;       Fonctions appelees : NA 
-;       Paramètres d'entree : NA  
-;       Paramètres de sortie : NA 
+;       ParamÃ¨tres d'entree : NA  
+;       ParamÃ¨tres de sortie : NA 
 ;       Variables utilisees : NA  
 ;       Include : Fichier P16F88.inc
 ;       Equates : NA
@@ -227,15 +308,15 @@ LIRE
 ;                                               
 ;******************************************************************************
 InitPic
-     bcf     STATUS, RP1       ; Pour s'assurer d'être dans les bank 0 et 1 
+     bcf     STATUS, RP1       ; Pour s'assurer d'Ãªtre dans les bank 0 et 1 
      BANK1                     ; Select Bank1        
-     bcf     INTCON,GIE        ; Désactive les interruptions        
-     clrf    ANSEL             ; Désactive les convertisseurs reg ANSEL 0x9B        
+     bcf     INTCON,GIE        ; DÃ©sactive les interruptions        
+     clrf    ANSEL             ; DÃ©sactive les convertisseurs reg ANSEL 0x9B        
      movlw   b'01111000'       ; osc internal 8 Mhz
      movwf   OSCCON
      movlw   b'11111111'       ; Remplacer les x par des 1 ou 0.
      movwf   TRISA             ; PortA en entree         
-     movlw   b'11100100'       ; Bits en entrées sauf,
+     movlw   b'11100100'       ; Bits en entrÃ©es sauf,
      movwf   TRISB             ; RB3 (Led1), RB4 (Led2) en sortie.
      movlw   0x00              ; Configure RA0 as analog input
      movwf   ADCON1      
