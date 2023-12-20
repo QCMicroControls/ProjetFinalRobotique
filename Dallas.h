@@ -1,11 +1,12 @@
-/****************************************************************************************
-   Nom du fichier : I2C.h
-   Auteur : Stéphane Deschênes                  
-      Date de création : 19-03-2006 
-        Fichier de déclaration et de définition pour les fonctions de traitement du 
-        I2C.
-  
-****************************************************************************************/
+//****************************************************************************************
+//   Nom du fichier : I2C.h
+//   Auteur : Xavier Champoux, Harold Malbrouck & Charles-Olivier Lemelin                  
+//      Date de crÃ©ation : 11 dÃ©cembre 2023 
+//       
+//        Fichier de dÃ©claration et de dÃ©finition pour les fonctions ayant trait 
+//        au controle de la Dallas.
+//  
+//****************************************************************************************
 
 #ifndef Dallas_H
   #define Dallas_H
