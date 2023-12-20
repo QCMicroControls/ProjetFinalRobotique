@@ -49,7 +49,7 @@ Rx232
     Btfss     PIR1,RCIF      ; Attend de recevoir quelque chose sur 
     goto      Rx232          ; le port serie.
 Rx232Go                      ; Si recu sur le port serie
-    movfww     RCREG          ;
+    movfw     RCREG          ;
     movwf     vReceive       ; Met le caractère reçu dans vReceive
     return
 ; fin routine Rx232------------------------------------------------------------
