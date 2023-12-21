@@ -183,7 +183,7 @@ Main
     ;premiers charactÃ¨res de la trame
 
 
-     ;Boucle127x256
+;Boucle127x256
      movlw   0x7F
      movwf   vBoucleHigh
      movlw   0xff
@@ -191,22 +191,21 @@ Main
 
      
 Encore    
-     ;boucle 
-     decfsz vBoucleHigh, 0
-     goto Encore
-     decfsz  vBoucleLow, 0
-     goto Encore
+    ;boucle 
+    decfsz vBoucleHigh, 0
+    goto Encore
+    decfsz  vBoucleLow, 0
+    goto Encore
      
-     movlw   0x7F
-     movwf   vBoucleHigh
-     movlw   0xff
-     movwf   vBoucleLow
+    movlw   0x7F
+    movwf   vBoucleHigh
+    movlw   0xff
+    movwf   vBoucleLow
      
-     call LireCoord 
-     call LirePince
-     call LireBalance
-     call TransmetTramme
-
+    call LireCoord 
+    call LirePince
+    call LireBalance
+    call TransmetTramme
     goto    Encore
 
 ;*********************************routines*************************************
@@ -216,52 +215,13 @@ Encore
 #include <FonctionsPWM.asm>
 #include <FonctionsDelai.asm>
 
-
-
-;*************************************TransmetTramme***************************
-;	Nom de la fonction : Tx232			
-;	Auteur : Pierre Chouinard		
-;       Date de création : 20/12/2023
-;       Date de modification : 21-07-2018	A.C. 					      
-;	Description : 	Routine de transmission de la communication série RS-232.
-;                   Sur le PIC16F88. Transmet 8 characteres
-;							
-;	Fonctions appelées : NA		
-;	Paramètres d'entrée : NA	
-;	Paramètres de sortie : NA		
-;	Variables utilisées : NA
-;	Equate : NA
-;	#Define : NA 
-;
-;******************************************************************************
-TrammeCheck 
-     
-     clrf     vTrammeChecksum
-     movlw    vTrame0
-     addwf    vTrammeChecksum
-     movlw    vTrame1
-     addwf    vTrammeChecksum
-     movfw    vTrame2
-     addwf    vTrammeChecksum
-     movfw    vTrame3
-     addwf    vTrammeChecksum
-     movfw    vTrame4
-     addwf    vTrammeChecksum
-     movfw    vTrame5
-     addwf    vTrammeChecksum
-     movfw    vTrame6
-     addwf    vTrammeChecksum
-     movfw    vTrame7
-     subwf    vTrammeChecksum
-     btfss    STATUS, z
-     goto     Encore
-return
+    
 
 ;*************************************TransmetTramme***************************
 ;	Nom de la fonction : Tx232			
 ;	Auteur : Pierre Chouinard		
 ;       Date de création : 10-10-2009	
-;       Date de modification : 21-07-2018	A.C.				      
+;       Date de modification : 21-07-2018	A.C. 					      
 ;	Description : 	Routine de transmission de la communication série RS-232.
 ;                   Sur le PIC16F88. Transmet 8 characteres
 ;							
@@ -276,7 +236,7 @@ return
 TransmetTramme
     movlw   0x47    ;G 
     call    Tx232
-    movlw   0x4f   ;O
+    movlw   0x4f    ;O
     call    Tx232
     movfw   vADCX
     call    Tx232
@@ -290,6 +250,7 @@ TransmetTramme
     call    Tx232
     movfw   vTrammeChecksum
     call    Tx232
+    return
 ; fin routine Tx232------------------------------------------------------------
 
 ;*************************************Tx232************************************
@@ -322,6 +283,7 @@ TrammeChecksumSend
     addwf   vTrammeChecksum
     movfw   vBalancePoid
     addwf   vTrammeChecksum
+    return
     
 ;*******************************************************************************
 ;                                 routines standard                           : 
