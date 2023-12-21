@@ -89,7 +89,7 @@
 ;************************************ I2C *************************************
 #define      SCL               PORTB,0
 #define      SDA               PORTB,1
-#define      BITX	           vUnBit,0     
+#define      BITX	       vUnBit,0     
 
      
 ;************************************ PWM *************************************
@@ -98,10 +98,10 @@
 #define      FLAG3             vFlag,3
 
 ;************************************ ADC *************************************
-#define      ADCCOORDY        0xC5     
-#define      ADCCOORDX        0xCD     
-#define      ADCPINCE         0xD5     
-#define      ADCBALANCE       0xDD     
+#define      ADCCOORDY        	0xC5     
+#define      ADCCOORDX          0xCD     
+#define      ADCPINCE           0xD5     
+#define      ADCBALANCE         0xDD     
 
 ;************************************ Buffer ************************************
 #define 	 RXINT  	   	   	PIR1,RCIF ;
