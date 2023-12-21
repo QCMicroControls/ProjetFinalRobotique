@@ -361,10 +361,10 @@ Interruption
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
-	btfss RXINT
-	goto  Interruption
-	call Rx232
-	BCF RXINT
+    btfss RXINT
+    goto  Interruption
+    call Rx232
+    BCF RXINT
     movfw vTramePTRIn
     andlw MASKIN
     movwf vTramePTRIn
