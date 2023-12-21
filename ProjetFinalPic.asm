@@ -120,6 +120,8 @@
      vTrame6
      vTrame7
      
+     vTramePTRIn
+     vTramePTROut
      vUnBit
      vAck
      
