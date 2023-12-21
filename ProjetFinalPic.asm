@@ -215,13 +215,12 @@ Encore
 #include <FonctionsPWM.asm>
 #include <FonctionsDelai.asm>
 
-    
 
-;*************************************TransmetTramme***************************
-;	Nom de la fonction : Tx232			
+;*************************************TransmetTrame***************************
+;	Nom de la fonction : Transmettrame			
 ;	Auteur : Pierre Chouinard		
 ;       Date de création : 10-10-2009	
-;       Date de modification : 21-07-2018	A.C. 					      
+;       Date de modification : 21-07-2018	A.C.				      
 ;	Description : 	Routine de transmission de la communication série RS-232.
 ;                   Sur le PIC16F88. Transmet 8 characteres
 ;							
@@ -233,10 +232,10 @@ Encore
 ;	#Define : NA 
 ;
 ;******************************************************************************
-TransmetTramme
+TransmetTrame
     movlw   0x47    ;G 
     call    Tx232
-    movlw   0x4f    ;O
+    movlw   0x4f   ;O
     call    Tx232
     movfw   vADCX
     call    Tx232
@@ -248,10 +247,10 @@ TransmetTramme
     call    Tx232
     movlw   0x00
     call    Tx232
-    movfw   vTrammeChecksum
+    movfw   vtrameChecksum
     call    Tx232
     return
-; fin routine Tx232------------------------------------------------------------
+; fin routine Transmettrame----------------------------------------------------
 
 ;*************************************Tx232************************************
 ;	Nom de la fonction : Tx232			
@@ -273,7 +272,7 @@ TrammeChecksumSend
     clrf    vTrammeChecksum
     movlw   0x47
     addwf   vTrammeChecksum
-    movlw   0x6f
+    movlw   0x4f
     addwf   vTrammeChecksum
     movfw   vADCX
     addwf   vTrammeChecksum
