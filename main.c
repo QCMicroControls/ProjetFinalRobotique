@@ -37,6 +37,11 @@ struct STServoPosition
 		unsigned char ucCoude;
 		unsigned char ucPoignet;
 		unsigned char ucPince;
+                unsigned char ucX;
+                unsigned char ucY;
+                unsigned char ucBalance;
+                unsigned char ucReserve;
+		unsigned char ucCheckSum;
 	}struct STServoPosition stState;
 // *************************************************************************************************
 // VARIABLES GLOBALES
@@ -158,14 +163,41 @@ void main (void)
  {
  vInitPortSerie();     //INITIALISE LE PORT SERIE
  vInitialiseLCD();     //INITIALISE LE LCD
- vEcrireMemI2C(0x47, 0x20); //ENVOIE GO POUR DEBUT TRAME
- vEcrireMemI2C(0x4F, 0x21); //^^^^^^^^ 
 
- vEcrireMemI2C(0x42, 0x22); //INITIALISATION POSITION DU BRAS
- vEcrireMemI2C(0x42, 0x23); //INITIALISATION POSITION DU BRAS
- vEcrireMemI2C(0x42, 0x24); //INITIALISATION POSITION DU BRAS
- vEcrireMemI2C(0x42, 0x25); //INITIALISATION POSITION DU BRAS
- vEcrireMemI2C(0xFF, 0x26); //INITIALISATION POSITION DU BRAS
+ SBUF0 = 'G';                //ENVOI DU 'G'
+ ucCheckSum = ucCheckSum + 'G';
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'O';                //ENVOI DU 'O'
+ ucCheckSum = ucCheckSum + 'O';
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'MILIEU';           //ENVOI DE 0X66 POUR BASE AU MILIEU
+ ucCheckSum = ucCheckSum + 0x66;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'MILIEU';           //ENVOI DE 0X66 POUR EPAULE AU MILIEU
+ ucCheckSum = ucCheckSum + 0x66;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'MILIEU';           //ENVOI DE 0X66 POUR COUDE AU MILIEU
+ ucCheckSum = ucCheckSum + 0x66;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'MILIEU';           //ENVOI DE 0X66 POUR POIGNET AU MILIEU
+ ucCheckSum = ucCheckSum + 0x66;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'OUVERT';           //ENVOI DE 0X66 POUR PINCE OUVERTE
+ ucCheckSum = ucCheckSum + 0x00;
+ while (!TI_0);
+ TI_0 = 0;
 
  vAfficheLCDComplet (ucEcranDebutTab);    //AFFICHAGE DE L'ECRAN DE BASE
  }
@@ -192,7 +224,7 @@ void main (void)
 			vLcdEcrireCaract('N', LIGNE3, 17);
 			vLcdEcrireCaract('L', LIGNE3, 18);
 			vLcdEcrireCaract(' ', LIGNE3, 19);
-			//TRAITEMENT DE LA TRAME
+			vTraiteTrame ();
 		}
 		if (ucComptTimer == 6)  //SI 300 MS DE PASSEES
 		{
@@ -223,6 +255,21 @@ void main (void)
 // FONCTIONS lOCALES
 // *************************************************************************************************
 // **************************************************************************************************
+void vTraiteSequence()
+//  Auteur: Xavier Champoux 	
+//  Date de création :  20 décembre 2023
+//  Version 1.0
+//
+//  Description					 : Traite la trame recue du pic
+//  Paramètres d'entrées : Aucune
+//  Paramètres de sortie : Aucune
+//
+//  Notes     		       : Aucune
+// *************************************************************************************************
+{
+	
+}
+// **************************************************************************************************
 void vTraiteTrame ()
 //  Auteur: Xavier Champoux 	
 //  Date de création :  20 décembre 2023
@@ -235,16 +282,64 @@ void vTraiteTrame ()
 //  Notes     		       : Aucune
 // *************************************************************************************************
 {
+ static unsigned char ucComptBuffer = 0;
+ static unsigned char ucTrameRecieve [8];
+ static unsigned char ucCheckSum;
  ucComptTouche = 0;
- //SAUVEGARDE DANS LA STRUCTURE LES VALEURS PRESENTES DANS LE BUFFER DE RECEPTION
- //TRANSMET LA POSITION AU PIC POUR SYNCHRO LES ECHANGES
- vEcrireMemI2C(0x47, 0x); //ENVOIE GO POUR DEBUT TRAME
- vEcrireMemI2C(0x4F, 0x); //^^^^^^^^ 
+ if (ucComptBuffer < 8)
+ {
+	ucTrameRecieve [ucComptBuffer] = SBUF0;
+	if (ucTrameRecieve [0] == 'G'
+	{
+		ucComptBuffer++;
+	}
+	else {ucComptBuffer = 0;}
+ }
+ if (ucComptBuffer == 8)
+ {
+	 stState.ucX = ucTrameRecieve[2];
+	 stState.ucY = ucTrameRecieve[3];
+	 stState.ucPince = ucTrameRecieve[4];
+	 stState.ucBalance = ucTrameRecieve[5];
+	 stState.ucReserve = ucTrameRecieve[6];
+         stState.ucCheckSum = ucTrameRecieve[7];
+ }	
+ SBUF0 = 'G';                      //ENVOI DU 'G'
+ ucCheckSum = ucCheckSum + 'G';
+ while (!TI_0);
+ TI_0 = 0;
 
- vEcrireMemI2C(stState.Base, 0x);
- vEcrireMemI2C(stState.Epaule, 0x);
- vEcrireMemI2C(stState.Coude, 0x);
- vEcrireMemI2C(stState.Poignet, 0x);
- vEcrireMemI2C(stState.Pince, 0x);
- vEcrireMemI2C(ucCheckSum, 0x);
+ SBUF0 = 'O';                      //ENVOI DU 'O'
+ ucCheckSum = ucCheckSum + 'O';
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'stState.Base';           //ENVOI DE Base
+ ucCheckSum = ucCheckSum + stState.Base;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Epaule;          //ENVOI DE Epaule
+ ucCheckSum = ucCheckSum + stState.Epaule;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Coude;           //ENVOI DE Coude
+ ucCheckSum = ucCheckSum + stState.Coude;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Poignet;         //ENVOI DE Poignet
+ ucCheckSum = ucCheckSum + stState.Poignet;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Pince;           //ENVOI DE Pince
+ ucCheckSum = ucCheckSum + stState.Pince;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = ucCheckSum;              //ENVOI DE CheckSum
+ while (!TI_0);
+ TI_0 = 0;
 }
