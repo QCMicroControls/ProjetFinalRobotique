@@ -14,7 +14,7 @@
 ;                    Technologies des SystÃ¨mes OrdinÃ©s                      *
 ;******************************************************************************
 ;                                                                             *
-;    Files required: p16f88.inc  pour la dÃ©finition des registres du pic16f88 *
+;    Files required: p16f88.inc  pour la dÃ©finition des registres du pic16f88*
 ;                                                                             *
 ;                                                                             *
 ;                                                                             *
@@ -89,7 +89,7 @@
 ;************************************ I2C *************************************
 #define      SCL               PORTB,0
 #define      SDA               PORTB,1
-#define      BITX	       vUnBit,0     
+#define      BITX	           vUnBit,0     
 
      
 ;************************************ PWM *************************************
@@ -98,10 +98,10 @@
 #define      FLAG3             vFlag,3
 
 ;************************************ ADC *************************************
-#define      ADCCOORDY        	0xC5     
-#define      ADCCOORDX          0xCD     
-#define      ADCPINCE           0xD5     
-#define      ADCBALANCE         0xDD     
+#define      ADCCOORDY        0xC5     
+#define      ADCCOORDX        0xCD     
+#define      ADCPINCE         0xD5     
+#define      ADCBALANCE       0xDD     
 
 ;************************************ Buffer ************************************
 #define 	 RXINT  	   	   	PIR1,RCIF ;
@@ -115,50 +115,53 @@ pclath_temp   EQU     0x73     ; variable used for context saving
 FSR_temp      EQU     0x74     ; variable used for context saving
 
 
-
-
 ;V   osVariables  EQU     0x20     ; Mettre ici vos Variables
-     CBLOCK  0x20
-     vTrame0  
-     vTrame1  
-     vTrame2
-     vTrame3
-     vTrame4
-     vTrame5
-     vTrame6
-     vTrame7
+    CBLOCK  0x20
+    vTrame0  
+    vTrame1  
+    vTrame2
+    vTrame3
+    vTrame4
+    vTrame5
+    vTrame6
+    vTrame7
      
-     vTramePTRIn
-     vTramePTROut
-     vIndiceTrame
-     vUnBit
-     vAck
-     
-     vAddHigh
-     vAddLow
-     vBoucleHigh
-     vBoucleLow
-     
-     vChannel
-     vComptByte
-     vCompteur5Ms
-     vCompteur1ms
-     vEcrireMem
-     vLireMem
-     
-     vResetInstructPCA
-     vMoteur
-     vPwm
-     vPwmHigh
-     vReadBit
-     vReadByte
-     vReceive
-     vWriteBit
-     vWriteByte
-     
-     vDeviceAddrPCA
-     vInputCharacter
+    vBase
+    vEpaule
+    vCoude
+    vPoignet
+    vPince
 
+    vTramePTRIn
+    vTramePTROut
+    vIndiceTrame
+    vUnBit
+    vAck
+     
+    vAddHigh
+    vAddLow
+    vBoucleHigh
+    vBoucleLow
+     
+    vChannel
+    vComptByte
+    vCompteur5Ms
+    vCompteur1ms
+    vEcrireMem
+    vLireMem
+     
+    vResetInstructPCA
+    vMoteur
+    vPwm
+    vPwmHigh
+    vReadBit
+    vReadByte
+    vReceive
+    vWriteBit
+    vWriteByte
+     
+    vDeviceAddrPCA
+    vInputCharacter
 
      vChannelAD
      vADCHaut
@@ -168,12 +171,8 @@ FSR_temp      EQU     0x74     ; variable used for context saving
      vADCX
      vADCY
      vTrameChecksum
-    
-  
-
-     
+   
      endc
-
 
 
 ;***************************VECTEUR DE RESET***********************************
@@ -208,8 +207,7 @@ Main
 
      
 Encore    
-    ;boucle 
-
+    
     decfsz vBoucleHigh
     goto Encore
 
@@ -224,8 +222,18 @@ Encore
     call LireCoord 
     call LirePince
     call LireBalance
-    
     call TransmetTrame
+    ;call     TraitementBuffer
+    ;call     Delai1mS
+
+    ;call     TrameChecksumReceive
+    ;movfw    vTrameChecksumCheck 
+    ;subwf    vTrameChecksum, 1
+    ;btfsc    STATUS,Z
+    ;Goto     BadCheckSum
+    ;call     TransmetMoteursPWM
+
+    
     goto    Encore
 
 ;*********************************routines*************************************
@@ -270,10 +278,10 @@ TransmetTrame
     movfw   vTrameChecksum
     call    Tx232
     return
-; fin routine Transmettrame----------------------------------------------------
+; fin routine TransmetTrame----------------------------------------------------
 
-;*************************************Tx232************************************
-;	Nom de la fonction : Tx232			
+;*************************************TrameChecksumSend*************************
+;	Nom de la fonction : TrameChecksumSend			
 ;	Auteur : Pierre Chouinard		
 ;       Date de création : 10-10-2009	
 ;       Date de modification : 21-07-2018	A.C. 					      
@@ -302,6 +310,86 @@ TrameChecksumSend
     addwf   vTrameChecksum
     movfw   vBalancePoid
     addwf   vTrameChecksum
+    return
+
+;*************************************TrameChecksumReceive*********************
+;	Nom de la fonction : TrameChecksumReceive		
+;	Auteur : Pierre Chouinard		
+;       Date de création : 10-10-2009	
+;       Date de modification : 21-07-2018	A.C. 					      
+;	Description : 	Routine de transmission de la communication série RS-232.
+;                   Sur le PIC16F88. Transmet 8 characteres
+;							
+;	Fonctions appelées : NA		
+;	Paramètres d'entrée : NA	
+;	Paramètres de sortie : NA		
+;	Variables utilisées : NA
+;	Equate : NA
+;	#Define : NA 
+;
+;******************************************************************************
+
+TrameChecksumReceive
+    clrf     vTrameChecksumCheck
+    movlw    0x47
+    addwf    vTrameChecksumCheck, F
+    movlw    0x4f
+    addwf    vTrameChecksumCheck, F
+    movfw    vBase
+    addwf    vTrameChecksumCheck, F
+    movfw    vEpaule
+    addwf    vTrameChecksumCheck, F
+    movfw    vCoude
+    addwf    vTrameChecksumCheck, F
+    movfw    vPoignet
+    addwf    vTrameChecksumCheck, F
+    movfw    vPince
+    addwf    vTrameChecksumCheck, F
+    return
+
+
+;*************************************TransmetMoteurPWM*********************
+;	Nom de la fonction : TransmetMoteursPWM		
+;	Auteur : Pierre Chouinard		
+;       Date de création : 10-10-2009	
+;       Date de modification : 21-07-2018	A.C. 					      
+;	Description : 	Routine de transmission de la communication série RS-232.
+;                   Sur le PIC16F88. Transmet 8 characteres
+;							
+;	Fonctions appelées : NA		
+;	Paramètres d'entrée : NA	
+;	Paramètres de sortie : NA		
+;	Variables utilisées : NA
+;	Equate : NA
+;	#Define : NA 
+;
+;******************************************************************************
+TransmetMoteursPWM
+    movlw    0x00
+    movwf    vMoteur
+    movfw    vBase
+    movwf    vPwm
+    call     SetPWMPCA9685
+    movlw    0x01
+    movwf    vMoteur
+    movfw    vEpaule
+    movwf    vPwm
+    call     SetPWMPCA9685
+    movlw    0x02
+    movwf    vMoteur
+    movfw    vCoude
+    movwf    vPwm
+    call     SetPWMPCA9685
+    movlw    0x03
+    movwf    vMoteur
+    movfw    vPoignet
+    movwf    vPwm
+    call     SetPWMPCA9685
+    movlw    0x04
+    movwf    vMoteur
+    movfw    vPince
+    movwf    vPwm
+    call     SetPWMPCA9685
     return
     
 ;*******************************************************************************
@@ -347,35 +435,30 @@ InitPic
 ; fin routine InitPic ---------------------------------------------------------
 
 
-
 ;****************************** Interruption **********************************
 Interruption
 
-     btfss	PIR1,RCIF
-     goto	IntOut
-     movwf      w_temp         ; save off current W register contents
-     movfw      STATUS       ; move STATUS register into W register
-     movwf	status_temp    ; save off contents of STATUS register
-     movfw      PCLATH       ; move PCLATH register into W register
-     movwf	pclath_temp    ; save off contents of PCLATH register
+     btfss   PIR1,RCIF
+     goto	   IntOut
+     movwf   w_temp         ; save off current W register contents
+     movfw   STATUS       ; move STATUS register into W register
+     movwf   Status_temp    ; save off contents of STATUS register
+     movfw   PCLATH       ; move PCLATH register into W register
+     movwf   pclath_temp    ; save off contents of PCLATH register
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
-    btfss RXINT
-    goto  Interruption
-    call Rx232
-    BCF RXINT
-    movfw vTramePTRIn
-    andlw MASKIN
-    movwf vTramePTRIn
-    addlw 0x20
-    movwf FSR
-    movfw vReceive
-    movwf INDF	
-    INCF vTramePTRIn
-    movfw vTramePTRIn
-    andlw MASKIN
-    movwf vTramePTRIn
+	btfss RXINT
+	goto  Interruption
+	call Rx232
+	BCF RXINT
+	andlw vTramePTRIn,MASKIN
+	addlw 0x20
+	movwf FSR
+	movfw vReceive
+	movwf INDF	
+	INCRF vTramePTRIn
+	andlw vTramePTRIn,MASKIN
 
      movfw     FSR_temp
      movwf     FSR
@@ -392,6 +475,7 @@ IntOut
 
 ; fin de la routine Interruption-----------------------------------------------
 
-    END                       ; directive 'end of program'
+END                       ; directive 'end of program'
+
 
 
