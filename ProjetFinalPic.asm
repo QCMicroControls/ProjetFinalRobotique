@@ -327,27 +327,45 @@ InitPic
 ; fin routine InitPic ---------------------------------------------------------
 
 
+
 ;****************************** Interruption **********************************
 Interruption
 
-;    movwf     w_temp         ; save off current W register contents
-;    movfw      STATUS,w       ; move STATUS register into W register
-;    movwf     status_temp    ; save off contents of STATUS register
-;    movfw      PCLATH,W       ; move PCLATH register into W register
-;    movwf     pclath_temp    ; save off contents of PCLATH register
+     btfss PIR1,RCIF
+     goto  IntOut
+     movwf     w_temp         ; save off current W register contents
+     movfw      STATUS,w       ; move STATUS register into W register
+     movwf     status_temp    ; save off contents of STATUS register
+     movfw      PCLATH,W       ; move PCLATH register into W register
+     movwf     pclath_temp    ; save off contents of PCLATH register
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
+     btfss     PIR1,RCIF
+     andlw     0x27
+     movwf     vBufPtrIN
+     movwf     FSR
+     movfw     RCREG
+     movwf     INDF
 
-;    movfw      pclath_temp,w  ; retrieve copy of PCLATH register
-;    movwf     PCLATH         ; restore pre-isr PCLATH register contents
-;    movfw      status_temp,w  ; retrieve copy of STATUS register
-;    movwf     STATUS         ; restore pre-isr STATUS register contents
-;    swapf     w_temp,f
-;    swapf     w_temp,w       ; restore pre-isr W register contents
-    retfie                   ; return from interrupt
+     movfw     FSR_temp
+     movwf     FSR
+     movf      pclath_temp,w  ; retrieve copy of PCLATH register
+     movwf     PCLATH         ; restore pre-isr PCLATH register contents
+     movf      status_temp,w  ; retrieve copy of STATUS register
+     movwf     STATUS         ; restore pre-isr STATUS register contents
+     swapf     w_temp,f
+     swapf     w_temp,w       ; restore pre-isr W register contents
+
+IntOut
+     retfie                   ; return from interrupt
+
 
 ; fin de la routine Interruption-----------------------------------------------
+
+
+
+        END                       ; directive 'end of program'
 
 
 
