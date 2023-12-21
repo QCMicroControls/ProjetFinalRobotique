@@ -366,7 +366,3 @@ IntOut
 
 
         END                       ; directive 'end of program'
-
-
-
-        END                       ; directive 'end of program'
