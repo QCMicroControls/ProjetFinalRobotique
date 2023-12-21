@@ -2,12 +2,11 @@
 TraitementBuffer 
 
 	movfw vTramePTRIn
-	subwf vTramePTROut
+	subwf vTramePTROut,0
 	btfss SUBST
-	goto Interruption
+	goto FinReceive
 
 Case0 
-	movfw 
 	movlw 0x00
 	subwf vIndiceTrame,W
 	btfss SUBST
@@ -79,11 +78,11 @@ LireCar1
 	movlw 0x47
 	subwf vReceive
 	btfss SUBST
-	goto  
+	goto  FinReceive
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame
-	goto  
+	goto  FinReceive
 	
 LireCar2	
 	movfw vTramePTROut
@@ -100,11 +99,11 @@ LireCar2
 	movlw 0x4F
 	subwf vReceive
 	btfss SUBST
-	goto  
+	goto  FinReceive
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame
-	goto  
+	goto  FinReceive
 	
 LireCar3	
 	movfw vTramePTROut
@@ -112,14 +111,14 @@ LireCar3
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame1
+	movwf vBase
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto  FinReceive
 
 LireCar4	
 	movfw vTramePTROut
@@ -127,14 +126,14 @@ LireCar4
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame2
+	movwf vEpaule
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto  FinReceive
 	
 LireCar5	
 	movfw vTramePTROut
@@ -142,14 +141,14 @@ LireCar5
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame3
+	movwf vCoude
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto  FinReceive
 	
 LireCar6	
 	movfw vTramePTROut
@@ -157,14 +156,14 @@ LireCar6
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame4
+	movwf vPoignet
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto  FinReceive
 	
 LireCar7	
 	movfw vTramePTROut
@@ -172,14 +171,14 @@ LireCar7
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame5
+	movwf vPince
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto  FinReceive
 	
 LireCar8	
 	movfw vTramePTROut
@@ -187,11 +186,14 @@ LireCar8
 	addlw 0x20
 	movwf FSR
 	movfw INDF
-	movwf vTrame6
+	movwf vMoteur6
 	incf  vTramePTROut
 	movlw 0x07
 	andwf vTramePTROut
 	incf  vIndiceTrame
 	movlw 0x07
 	andwf vIndiceTrame,f
-	goto  
+	goto FinReceive 
+
+FinReceive
+	return
