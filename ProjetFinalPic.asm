@@ -9,9 +9,9 @@
 ;                                                                             *
 ;                                                                             *
 ;    Author:         Lemelin C.O., Malbrouk H., Champoux X.                   *
-;    Company:        CÃ©gep Limoilou Campus de QuÃ©bec                          *
-;                    DÃ©partement des technologies du gÃ©nie Ã©lectrique         *
-;                    Technologies des SystÃ¨mes OrdinÃ©s                        *
+;    Company:        CÃ©gep Limoilou Campus de QuÃ©bec                        *
+;                    DÃ©partement des technologies du gÃ©nie Ã©lectrique      *
+;                    Technologies des SystÃ¨mes OrdinÃ©s                      *
 ;******************************************************************************
 ;                                                                             *
 ;    Files required: p16f88.inc  pour la dÃ©finition des registres du pic16f88 *
