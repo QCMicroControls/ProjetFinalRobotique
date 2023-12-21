@@ -130,6 +130,7 @@ FSR_temp      EQU     0x74     ; variable used for context saving
      
      vTramePTRIn
      vTramePTROut
+     vIndiceTrame
      vUnBit
      vAck
      
@@ -364,13 +365,17 @@ Interruption
 	goto  Interruption
 	call Rx232
 	BCF RXINT
-	andlw vTramePTRIn,MASKIN
-	addlw 0x20
-	movwf FSR
-	movfw vReceive
-	movwf INDF	
-	INCRF vTramePTRIn
-	andlw vTramePTRIn,MASKIN
+    movfw vTramePTRIn
+    andlw MASKIN
+    movwf vTramePTRIn
+    addlw 0x20
+    movwf FSR
+    movfw vReceive
+    movwf INDF	
+    INCF vTramePTRIn
+    movfw vTramePTRIn
+    andlw MASKIN
+    movwf vTramePTRIn
 
      movfw     FSR_temp
      movwf     FSR
@@ -387,7 +392,6 @@ IntOut
 
 ; fin de la routine Interruption-----------------------------------------------
 
-END                       ; directive 'end of program'
-
+    END                       ; directive 'end of program'
 
 
