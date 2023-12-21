@@ -89,7 +89,7 @@
 ;************************************ I2C *************************************
 #define      SCL               PORTB,0
 #define      SDA               PORTB,1
-#define      BITX	       vUnBit,0     
+#define      BITX	           vUnBit,0     
 
      
 ;************************************ PWM *************************************
@@ -98,16 +98,23 @@
 #define      FLAG3             vFlag,3
 
 ;************************************ ADC *************************************
-#define       ADCCOORDY        0xC5     
-#define       ADCCOORDX        0xCD     
-#define       ADCPINCE         0xD5     
-#define       ADCBALANCE       0xDD     
+#define      ADCCOORDY        0xC5     
+#define      ADCCOORDX        0xCD     
+#define      ADCPINCE         0xD5     
+#define      ADCBALANCE       0xDD     
+
+;************************************ Buffer ************************************
+#define 	 RXINT  	   	   	PIR1,RCIF ;
+#define    MASKIN            	0x07
+#define	 SUBST			STATUS,Z;
 
 ;***** VARIABLE DEFINITIONS  **************************************************
 w_temp        EQU     0x71     ; variable used for context saving 
 status_temp   EQU     0x72     ; variable used for context saving
 pclath_temp   EQU     0x73     ; variable used for context saving
 FSR_temp      EQU     0x74     ; variable used for context saving
+
+
 
 
 ;V   osVariables  EQU     0x20     ; Mettre ici vos Variables
@@ -188,8 +195,9 @@ Main
      call    SetFreqPCA9685
 
      
-    ;premiers charactÃ¨res de la trame
-
+	clrf vTramePTRIn
+	clrf vTramePTROut	
+	BCF RXINT
 
 ;Boucle127x256
      movlw   0x7F
@@ -225,7 +233,7 @@ Encore
 #include <FonctionsRS232.asm>
 #include <FonctionsPWM.asm>
 #include <FonctionsDelai.asm>
-
+#include <RoutineRxInt.asm>
 
 ;*************************************TransmetTrame***************************
 ;	Nom de la fonction : Transmettrame			
@@ -352,12 +360,17 @@ Interruption
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
-     btfss     PIR1,RCIF
-     andlw     0x27
-     movwf     vTramePTRIn
-     movwf     FSR
-     movfw     RCREG
-     movwf     INDF
+	btfss RXINT
+	goto  Interruption
+	call Rx232
+	BCF RXINT
+	andlw vTramePTRIn,MASKIN
+	addlw 0x20
+	movwf FSR
+	movfw vReceive
+	movwf INDF	
+	INCRF vTramePTRIn
+	andlw vTramePTRIn,MASKIN
 
      movfw     FSR_temp
      movwf     FSR
@@ -375,7 +388,6 @@ IntOut
 ; fin de la routine Interruption-----------------------------------------------
 
 END                       ; directive 'end of program'
-
 
 
 
