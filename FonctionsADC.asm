@@ -50,6 +50,7 @@ LectureY
      BANK1
      clrf      ANSEL
      BANK0
+     return
 ; fin routine LireCoord--------------------------------------------------------
 
 ;****************************** LirePince *************************************
@@ -82,6 +83,7 @@ LirePince
      BANK1
      clrf      ANSEL
      BANK0
+     return
 ; fin routine LirePince------------------------------------------------------
 
 
@@ -117,6 +119,7 @@ LireBalance
      BANK1
      clrf      ANSEL
      BANK0
+     return
 ; fin routine LireBalance------------------------------------------------------
 
 
@@ -158,7 +161,7 @@ WAIT
      movwf    vADCHaut ; Store it in a variable if needed
      movfw    ADRESL ; Move the low byte of the result to W
      movwf    vADCBas ; Store it in a variable if needed
-  
+     return
 
 ; fin routine LectureADC--------------------------------------------------------
 
