@@ -155,3 +155,77 @@ void IntTimer0(void) interrupt 1
 	}
 	TF0 = 0;
 }
+// **************************************************************************************************
+void vTraiteTrame ()
+//  Auteur: Xavier Champoux 	
+//  Date de création :  20 décembre 2023
+//  Version 1.0
+//
+//  Description					 : Traite la trame recue du pic
+//  Paramètres d'entrées : Aucune
+//  Paramètres de sortie : Aucune
+//
+//  Notes     		       : Aucune
+// *************************************************************************************************
+{
+ static unsigned char ucComptBuffer = 0;
+ static unsigned char ucTrameRecieve [8];
+ static unsigned char ucCheckSum;
+ ucComptTouche = 0;
+ if (ucComptBuffer < 8)
+ {
+	ucTrameRecieve [ucComptBuffer] = SBUF0;
+	if (ucTrameRecieve [0] == 'G'
+	{
+		ucComptBuffer++;
+	}
+	else {ucComptBuffer = 0;}
+ }
+ if (ucComptBuffer == 8)
+ {
+	 stState.ucX = ucTrameRecieve[2];
+	 stState.ucY = ucTrameRecieve[3];
+	 stState.ucPince = ucTrameRecieve[4];
+	 stState.ucBalance = ucTrameRecieve[5];
+	 stState.ucReserve = ucTrameRecieve[6];
+         stState.ucCheckSum = ucTrameRecieve[7];
+ }	
+ SBUF0 = 'G';                      //ENVOI DU 'G'
+ ucCheckSum = ucCheckSum + 'G';
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'O';                      //ENVOI DU 'O'
+ ucCheckSum = ucCheckSum + 'O';
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = 'stState.Base';           //ENVOI DE Base
+ ucCheckSum = ucCheckSum + stState.Base;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Epaule;          //ENVOI DE Epaule
+ ucCheckSum = ucCheckSum + stState.Epaule;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Coude;           //ENVOI DE Coude
+ ucCheckSum = ucCheckSum + stState.Coude;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Poignet;         //ENVOI DE Poignet
+ ucCheckSum = ucCheckSum + stState.Poignet;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = stState.Pince;           //ENVOI DE Pince
+ ucCheckSum = ucCheckSum + stState.Pince;
+ while (!TI_0);
+ TI_0 = 0;
+
+ SBUF0 = ucCheckSum;              //ENVOI DE CheckSum
+ while (!TI_0);
+ TI_0 = 0;
+}
