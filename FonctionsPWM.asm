@@ -60,6 +60,7 @@ PWMSUITE
      movfw   vPwmHigh
      movwf   vWriteByte
      call    Ecrire8BitsI2C
+     call StopBitI2C
      
      return
 
