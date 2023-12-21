@@ -229,3 +229,15 @@ void vTraiteTrame ()
  while (!TI_0);
  TI_0 = 0;
 }
+// **************************************************************************************************
+void vAfficheEtat ()
+//  Auteur: Xavier Champoux 	
+//  Date de création :  20 décembre 2023
+//  Version 1.0
+//
+//  Description					 : Traite la trame recue du pic
+//  Paramètres d'entrées : Aucune
+//  Paramètres de sortie : Aucune
+//
+//  Notes     		       : Aucune
+// *************************************************************************************************
