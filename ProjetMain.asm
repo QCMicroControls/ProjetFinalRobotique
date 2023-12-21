@@ -202,9 +202,9 @@ Main
      call    SetFreqPCA9685
 
      
-	clrf vTramePTRIn
-	clrf vTramePTROut	
-	BCF RXINT
+    clrf vTramePTRIn
+    clrf vTramePTROut	
+    BCF RXINT
 
 ;Boucle127x256
      movlw   0x7F
@@ -216,24 +216,28 @@ Main
 Encore    
     ;boucle 
 
-    decfsz vBoucleHigh
+    decfsz vBoucleHigh, F
     goto Encore
 
-    decfsz  vBoucleLow
+    decfsz  vBoucleLow, F
     goto Encore
      
     movlw   0x7F
-    movwf   vBoucleHigh
+    movwf   vBoucleHigh 
     movlw   0xff
     movwf   vBoucleLow
      
     call LireCoord 
     call LirePince
-    call LireBalance
-    
+    call LireBalance    
     call TransmetTrame
-    call delai1ms
-    call TraitementBuffer
+
+    call TransmetMoteursPWM
+    
+    call Delai1mS
+    ;call TraitementBuffer
+
+    
     goto    Encore
 
 ;*********************************routines*************************************
@@ -299,19 +303,81 @@ TransmetTrame
 TrameChecksumSend
     clrf    vTrameChecksum
     movlw   0x47
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     movlw   0x4f
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     movfw   vADCX
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     movfw   vADCY
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     movfw   vPincePres
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     movfw   vBalancePoid
-    addwf   vTrameChecksum
+    addwf   vTrameChecksum, F
     return
     
+    ;*************************************Tx232************************************
+;	Nom de la fonction : Tx232			
+;	Auteur : Pierre Chouinard		
+;       Date de création : 10-10-2009	
+;       Date de modification : 21-07-2018	A.C. 					      
+;	Description : 	Routine de transmission de la communication série RS-232.
+;                   Sur le PIC16F88. Transmet 8 characteres
+;							
+;	Fonctions appelées : NA		
+;	Paramètres d'entrée : NA	
+;	Paramètres de sortie : NA		
+;	Variables utilisées : NA
+;	Equate : NA
+;	#Define : NA 
+;
+;******************************************************************************
+TrameChecksumReceive
+    clrf    vTrameChecksum
+    movlw   0x47
+    addwf   vTrameChecksum, F
+    movlw   0x4f
+    addwf   vTrameChecksum, F
+    movfw   vBase
+    addwf   vTrameChecksum, F
+    movfw   vEpaule
+    addwf   vTrameChecksum, F
+    movfw   vCoude
+    addwf   vTrameChecksum, F
+    movfw   vPoignet
+    addwf   vTrameChecksum, F
+    movfw   vPince
+    addwf   vTrameChecksum, F
+   return
+    
+    
+TransmetMoteursPWM
+   movlw 0x00
+   movwf vMoteur
+   movlw 0x68
+   movwf vPwm
+   call  SetPWMPCA9685
+   movlw 0x01
+   movwf vMoteur
+   movlw 0x68
+   movwf vPwm
+   call  SetPWMPCA9685
+   movlw 0x02
+   movwf vMoteur
+   movlw 0x68
+   movwf vPwm
+   call  SetPWMPCA9685
+   movlw 0x03
+   movwf vMoteur
+   movlw 0x68
+   movwf vPwm
+   call  SetPWMPCA9685
+   movlw 0x04
+   movwf vMoteur
+   movlw 0xff
+   movwf vPwm
+   call  SetPWMPCA9685
+   
 ;*******************************************************************************
 ;                                 routines standard                           : 
 ;*******************************************************************************
@@ -354,6 +420,7 @@ InitPic
 
 ; fin routine InitPic ---------------------------------------------------------
 
+     
 
 
 ;****************************** Interruption **********************************
