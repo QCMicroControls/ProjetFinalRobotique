@@ -9,7 +9,7 @@
 ;                                                                             *
 ;                                                                             *
 ;    Author:         Lemelin C.O., Malbrouk H., Champoux X.                   *
-;    Company:        CÃ©gep Limoilou Campus de QuÃ©bec                        *
+;    Company:        CÃ©gep Limoilou Campus de QuÃ©bec                       *
 ;                    DÃ©partement des technologies du gÃ©nie Ã©lectrique      *
 ;                    Technologies des SystÃ¨mes OrdinÃ©s                      *
 ;******************************************************************************
