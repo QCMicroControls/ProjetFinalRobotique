@@ -1,167 +1,167 @@
-;****************************** LireCoord *************************************
-;       Nom de la fonction : LireCoord                       
-;       Auteur : C-O Lemelin                
-;      Date de creation :                                  
-;      Modification : 
-;       Description :   Routine qui contient la lecture du module convertisseur 
-;                       analogue/digital de la carte pic pour lire la coordonée
-;                       X/Y
-;
-;
-;       Fonctions appelees :            
-;       Paramètres d'entree :            
-;       Paramètres de sortie :            
-;       Variables utilisees : 
+;********************************SetPWMPCA9685**********************************
+;       Nom de la fonction : SetPWMPCA9685                 
+;       Auteur :         harold
+;       Date de creation :                               
+;       Description :   
+;                                                       
+;       Fonctions appelees :           
+;       Paramètres d'entree :              
+;       Paramètres de sortie :           
+;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
-;       #Define :                    
+;       #Define :               
 ;                                               
-;******************************************************************************
-LireCoord
-
-LectureX
-     BANK1
-     movlw     b'10111110' ;RA0-6 en sortie
-     movwf     TRISA
-     bsf       ANSEL, 1   ;RA1 en analogue
-     BANK0
-     bsf       PORTA, 0   ;RA0 a 1
-     bcf       PORTA, 6   ;RA6 a 0
+;*******************************************************************************
+SetPWMPCA9685
      
-     call     LectureADC
-     movfw     vADCHaut
-     movwf     vADCX
-     BANK1
-     clrf      ANSEL
-     BANK0
+     ;Calcul Moteur
+     bcf    CARRY
+     rlf    vMoteur
+     rlf    vMoteur
+     movlw  .6
+     addwf  vMoteur,f
 
-LectureY
-     BANK1
-     movlw     b'01111101' ;RA1-7 en sortie
-     movwf     TRISA
-     bsf       ANSEL, 0   ;RA0 en analogue
-     BANK0
-     bsf       PORTA, 1   ;RA1 a 1 
-     bcf       PORTA, 7   ;RA7 a 0
+     movlw 0x00
+     movwf vPwmHi
      
-     call      LectureADC
-     movfw     vADCHaut
-     movwf     vADCY
-     BANK1
-     clrf      ANSEL
-     BANK0
+     movfw vPwm
+     addlw .205
+     movwf vPwm
+     btfsc CARRY
+     incf vPwmHi,1
+     
+     ;�crire I2CPCA********************
+     call StartBitI2C
+     movlw 0x80
+     movwf vWryteByte
+     call Ecrire8BitsI2C     
+	 
+    ;Selectionne le moteur
+     movfw vMoteur
+     movwf vWryteByte
+     call Ecrire8BitsI2C
+     
+     ;�crit 0 au d�but de l'onde H****
+     movlw 0x00
+     movwf vWryteByte
+     call Ecrire8BitsI2C
+     
+     ;�crit 0 au d�but de l'onde B****
+     movlw 0x00
+     movwf vWryteByte
+     call Ecrire8BitsI2C
+     
+     ;�crire 0xFinB******************* 
+     movfw vPwm
+     movwf vWryteByte
+     call Ecrire8BitsI2C
+     
+     ;�crire 0xFinB*******************
+     movfw vPwmHi
+     movwf vWryteByte
+     call Ecrire8BitsI2C
+     
+     call StopBitI2C  
      return
-; fin routine LireCoord--------------------------------------------------------
+;Fin routine SetPWMPCA9685----------------------------------------------------
 
-;****************************** LirePince *************************************
-;       Nom de la fonction : LirePince                       
-;       Auteur : C-O Lemelin                
-;      Date de creation :                                  
-;      Modification : 
-;       Description :   Routine qui contient la lecture du module convertisseur 
-;                       analogue/digital de la carte pic pour le senseur de la
-;                       pince, de façon à vérifier l'acquisition d'un poix.
-;
-;       Fonctions appelees :            
-;       Paramètres d'entree :            
-;       Paramètres de sortie :            
-;       Variables utilisees : 
+; fin routine SetPWMPCA9685------------------------------------------------------
+;********************************SetFreqPCA9685*********************************
+;       Nom de la fonction : SetFreqPCA9685                 
+;       Auteur :         
+;       Date de creation :                               
+;       Description :   
+;                                                       
+;       Fonctions appelees :           
+;       Paramètres d'entree :              
+;       Paramètres de sortie :           
+;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
-;       #Define :                    
+;       #Define :               
 ;                                               
-;******************************************************************************
-LirePince
-     BANK1
-     bsf       ANSEL, 2
-     BANK0
-     movlw     ADCPINCE
-     movwf     vChannelAD
-     call      LectureADC
-     movfw     vADCHaut
-     movwf     vPincePres
-     BANK1
-     clrf      ANSEL
-     BANK0
+;*******************************************************************************
+SetFreqPCA9685
+     
+     call    StartBitI2C
+     ;;;;ECRIRE I2CPCA;;;;
+     movlw   0x80
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;REG MODE 1;;;;
+     movlw   0x00
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;MODE SLEEP;;;;
+     movlw   0x10
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C 
+     call    StopBitI2C
+     
+     call    StartBitI2C
+     ;;;;ECRIRE I2CPCA;;;;
+     movlw   0x80
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;REG PRESCALER;;;;
+     movlw   0xFE
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;0X7C;;;;
+     movlw   0x7C
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     call    StopBitI2C
+     
+     call    StartBitI2C
+     ;;;;ECRIRE I2CPCA;;;;
+     movlw   0x80
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;REG MODE 1;;;;
+     movlw   0x00
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     ;;;;FONCTIONNEMENT NORMAL;;;;
+     movlw   0xA0
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     call    StopBitI2C
+     
      return
-; fin routine LirePince------------------------------------------------------
 
-
-;****************************** LireBalance *************************************
-;       Nom de la fonction : LireBalance                       
-;       Auteur : C-O Lemelin                
-;      Date de creation :   19/12/2023                               
-;      Modification : 
-;       Description :   Routine qui contient la lecture du module convertisseur 
-;                       analogue/digital de la carte pic pour lire le poid sur la 
-;                       balance
-;
-;
-;       Fonctions appelees :            
-;       Paramètres d'entree :            
-;       Paramètres de sortie :            
-;       Variables utilisees : 
+; fin routine SetFreqPCA9685----------------------------------------------------
+;********************************ResetPCA9685***********************************
+;       Nom de la fonction : ResetPCA9685                 
+;       Auteur :         
+;       Date de creation :                               
+;       Description :   
+;                                                       
+;       Fonctions appelees :           
+;       Paramètres d'entree :              
+;       Paramètres de sortie :           
+;       Variables utilisees :  
 ;       Include :    
 ;       Equate :                   
-;       #Define :                    
+;       #Define :               
 ;                                               
-;******************************************************************************
-LireBalance
-     BANK1
-     bsf       ANSEL, 2
-     BANK0
-
-     movlw     ADCBALANCE
-     movwf     vChannelAD
-     call      LectureADC
-     movfw     vADCHaut
-     movwf     vPincePres
-     BANK1
-     clrf      ANSEL
-     BANK0
-     return
-; fin routine LireBalance------------------------------------------------------
-
-
-;****************************** LectureADC *************************************
-;       Nom de la fonction : LectureADC                       
-;       Auteur : C-O Lemelin                
-;      Date de creation : 15/12/                                  
-;      Modification : 
-;       Description :   Conversion analogue/digitale par la carte pic
-;
-;
-;       Fonctions appelees :            
-;       Paramètres d'entree :            
-;       Paramètres de sortie :            
-;       Variables utilisees : 
-;       Include :    
-;       Equate :                   
-;       #Define :                    
-;                                               
-;******************************************************************************
-LectureADC
-     movlw   vChannelAD
-     movwf   ADCON0
-     call    Delai1mS
-CONVERT 
-     btfsc   ADCON0, GO_DONE ; Check if conversion is still in progress
-     goto    CONVERT ; Wait for the previous conversion to finish
-     bsf     ADCON0, GO_DONE ; Start the conversion
-     nop   
-     nop
-
-; Wait for conversion to complete
-WAIT    
-     btfsc   ADCON0, GO_DONE ; Check if conversion is still in progress
-     goto    WAIT ; Wait until the conversion is complete
-
-; Retrieve ADC result
-     movfw    ADRESH ; Move the high byte of the result to W
-     movwf    vADCHaut ; Store it in a variable if needed
-     movfw    ADRESL ; Move the low byte of the result to W
-     movwf    vADCBas ; Store it in a variable if needed
+;*******************************************************************************
+ResetPCA9685
+     call    StartBitI2C
+     movlw   0x80
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     movlw   0x00
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     
+     movlw   0x06
+     movwf   vWriteByte
+     call    Ecrire8BitsI2C
+     
+     call    StopBitI2C
+     
      return
 
-; fin routine LectureADC--------------------------------------------------------
-
+; fin routine ResetPCA9685------------------------------------------------------
