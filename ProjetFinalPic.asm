@@ -104,9 +104,10 @@
 #define       ADCBALANCE       0xDD     
 
 ;***** VARIABLE DEFINITIONS  **************************************************
-;w_temp        EQU     0x71     ; variable used for context saving 
-;status_temp   EQU     0x72     ; variable used for context saving
-;pclath_temp   EQU     0x73     ; variable used for context saving
+w_temp        EQU     0x71     ; variable used for context saving 
+status_temp   EQU     0x72     ; variable used for context saving
+pclath_temp   EQU     0x73     ; variable used for context saving
+FSR_temp      EQU     0x74     ; variable used for context saving
 
 
 ;V   osVariables  EQU     0x20     ; Mettre ici vos Variables
@@ -158,9 +159,12 @@
      vBalancePoid
      vADCX
      vADCY
+     vTrameChecksum
+    
+  
 
-     vTrammeChecksum
-    endc
+     
+     endc
 
 
 
@@ -179,8 +183,10 @@
 
 Main    
      call    InitPic
+     call    InitRS232
      call    ResetPCA9685
      call    SetFreqPCA9685
+
      
     ;premiers charactÃ¨res de la trame
 
@@ -194,9 +200,11 @@ Main
      
 Encore    
     ;boucle 
-    decfsz vBoucleHigh, 0
+
+    decfsz vBoucleHigh
     goto Encore
-    decfsz  vBoucleLow, 0
+
+    decfsz  vBoucleLow
     goto Encore
      
     movlw   0x7F
@@ -207,7 +215,8 @@ Encore
     call LireCoord 
     call LirePince
     call LireBalance
-    call TransmetTramme
+    
+    call TransmetTrame
     goto    Encore
 
 ;*********************************routines*************************************
@@ -249,7 +258,7 @@ TransmetTrame
     call    Tx232
     movlw   0x00
     call    Tx232
-    movfw   vtrameChecksum
+    movfw   vTrameChecksum
     call    Tx232
     return
 ; fin routine Transmettrame----------------------------------------------------
@@ -270,20 +279,20 @@ TransmetTrame
 ;	#Define : NA 
 ;
 ;******************************************************************************
-TrammeChecksumSend
-    clrf    vTrammeChecksum
+TrameChecksumSend
+    clrf    vTrameChecksum
     movlw   0x47
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     movlw   0x4f
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     movfw   vADCX
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     movfw   vADCY
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     movfw   vPincePres
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     movfw   vBalancePoid
-    addwf   vTrammeChecksum
+    addwf   vTrameChecksum
     return
     
 ;*******************************************************************************
@@ -333,19 +342,19 @@ InitPic
 ;****************************** Interruption **********************************
 Interruption
 
-     btfss PIR1,RCIF
-     goto  IntOut
-     movwf     w_temp         ; save off current W register contents
-     movfw      STATUS,w       ; move STATUS register into W register
-     movwf     status_temp    ; save off contents of STATUS register
-     movfw      PCLATH,W       ; move PCLATH register into W register
-     movwf     pclath_temp    ; save off contents of PCLATH register
+     btfss	PIR1,RCIF
+     goto	IntOut
+     movwf      w_temp         ; save off current W register contents
+     movfw      STATUS       ; move STATUS register into W register
+     movwf	status_temp    ; save off contents of STATUS register
+     movfw      PCLATH       ; move PCLATH register into W register
+     movwf	pclath_temp    ; save off contents of PCLATH register
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
      btfss     PIR1,RCIF
      andlw     0x27
-     movwf     vBufPtrIN
+     movwf     vTramePTRIn
      movwf     FSR
      movfw     RCREG
      movwf     INDF
@@ -365,6 +374,8 @@ IntOut
 
 ; fin de la routine Interruption-----------------------------------------------
 
+END                       ; directive 'end of program'
 
 
-        END                       ; directive 'end of program'
+
+
