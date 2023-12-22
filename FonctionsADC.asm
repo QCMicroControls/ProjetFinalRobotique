@@ -144,6 +144,7 @@ LectureADC
      movfw   vChannelAD
      movwf   ADCON0
      call    Delai1mS
+     call    Delai1mS
 CONVERT 
      btfsc   ADCON0, GO_DONE ; Check if conversion is still in progress
      goto    CONVERT ; Wait for the previous conversion to finish
@@ -164,4 +165,3 @@ WAIT
      return
 
 ; fin routine LectureADC--------------------------------------------------------
-
