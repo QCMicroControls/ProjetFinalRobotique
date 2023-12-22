@@ -141,7 +141,7 @@ LireBalance
 ;                                               
 ;******************************************************************************
 LectureADC
-     movlw   vChannelAD
+     movfw   vChannelAD
      movwf   ADCON0
      call    Delai1mS
 CONVERT 
