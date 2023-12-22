@@ -1,9 +1,10 @@
 ;********************************SetPWMPCA9685**********************************
 ;       Nom de la fonction : SetPWMPCA9685                 
-;       Auteur :         
+;       Auteur :         Malbrouck, Harold
 ;       Date de creation :                               
-;       Description :   
-;                                                       
+;       Description :   Routine PIC qui envoi une série de charactere Par
+;                       par I2C permettant le contrôle  de stepper motors
+;                       via une carte PCA9685
 ;       Fonctions appelees :           
 ;       Paramètres d'entree :              
 ;       Paramètres de sortie :           
@@ -67,10 +68,10 @@ PWMSUITE
 ; fin routine SetPWMPCA9685------------------------------------------------------
 ;********************************SetFreqPCA9685*********************************
 ;       Nom de la fonction : SetFreqPCA9685                 
-;       Auteur :         
+;       Auteur :          Malbrouck, Harold
 ;       Date de creation :                               
-;       Description :   
-;                                                       
+;       Description :   Etabli la fréquence de commiunication avec la carte
+;                       PCA                                
 ;       Fonctions appelees :           
 ;       Paramètres d'entree :              
 ;       Paramètres de sortie :           
